@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { sql, poolPromise } = require('./db');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '.')));
+app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
 
 // ====== بيانات الواتساب - حطيها في Railway Variables مش هنا ======
 // في Railway -> Variables حطي:
@@ -177,7 +180,6 @@ app.post('/api/send-whatsapp', async (req, res) => {
 
 app.post('/api/sync-order', async (req, res) => {
     try {
-        // دلوقتي بنستقبل كل بيانات العميلة مش الاسم بس
         const { items, clientName, clientPhone, altPhone, governorate, address, paymentMethod, shippingCost, notes, grandTotal } = req.body;
         let pool = await poolPromise;
         let results = [];
@@ -196,13 +198,11 @@ app.post('/api/sync-order', async (req, res) => {
                 results.push({ title: item.title, color, size, status: 'غير متاح', available: row?.WebAvailableQty ?? 0, availableColors: avail, branch: '' });
                 continue;
             }
-            // ====== الأولوية: اسكندرية (مخزن 1) الأول، وبعدين القاهرة (مخزن 2) ======
             const deductAlex = Math.min(row.AlexQty, quantity);
             const deductCairo = quantity - deductAlex;
             const ok1 = await createWTWRequest(pool, 1, model, color, size, deductAlex);
             const ok2 = await createWTWRequest(pool, 2, model, color, size, deductCairo);
 
-            // اسم الفرع اللي اتسحب منه فعلا
             let branch = '';
             if (deductAlex > 0 && deductCairo > 0) branch = `الإسكندرية (${deductAlex}) + القاهرة (${deductCairo})`;
             else if (deductAlex > 0) branch = 'الإسكندرية';
