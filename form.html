@@ -143,10 +143,8 @@
     </div>
 
     <script>
-        // ====== غيري السطر ده بس لما نجيب لينك ngrok ======
-        // للتجربة على جهازك: http://localhost:3000
-        // للموقع الحقيقي: حطي لينك ngrok هنا زي https://xxxx.ngrok-free.app
-        const API_URL = 'http://localhost:3000';
+        // ====== متعدل: بيكلم نفس دومين Railway على طول، مفيش localhost ======
+        const API_URL = '';
 
         let subtotal = 0;
         let shippingCost = 0;
@@ -158,11 +156,9 @@
         const closeModalOk = document.getElementById('closeModalOk');
         const submitBtn = document.getElementById('submitBtn');
 
+        // لينك انستا باي بس هو اللي باين للعميلة، التوكن اتشال من هنا خالص
         const INSTAPAY_LINK = "https://ipn.eg/S/mohamedali8222/instapay/8jmwhg";
-        const VODAFONE_NUMBER = "01005288219";
-        const ULTRAMSG_INSTANCE_ID = "instance196362";
-        const ULTRAMSG_TOKEN = "agyfoi0qg5lnqbum";
-        const STORE_WHATSAPP_NUMBER = "201558025074";
+        // رقم فودافون كاش هيجي من السيرفر، مش مكتوب هنا عشان محدش يشوفه
 
         function renderOrderSummary() {
             rawCartData = JSON.parse(localStorage.getItem('lenaCart')) || [];
@@ -182,7 +178,7 @@
                 totalItemsCount += parseInt(item.quantity || 1);
                 container.innerHTML += `
                     <div class="order-item">
-                        <img src="${item.image}" alt="${item.title}">
+                        <img src="${item.image}" alt="">
                         <div class="order-item-details">
                             <div class="order-item-title">${item.title}</div>
                             <div>Color: <strong>${item.color || 'Default'}</strong> | Size: <strong>${item.size}</strong></div>
@@ -210,7 +206,7 @@
             checkPaymentMethodsLogic();
         }
 
-        function checkPaymentMethodsLogic() {
+        async function checkPaymentMethodsLogic() {
             const transferProofSection = document.getElementById('transferProofSection');
             const receiptInput = document.getElementById('receiptImage');
             const paymentAccountDetails = document.getElementById('paymentAccountDetails');
@@ -228,10 +224,17 @@
             } else if (currentPayment === 'Vodafone Cash') {
                 transferProofSection.classList.remove('hidden');
                 receiptInput.required = false;
+                // رقم فودافون بيجي من السيرفر
+                let vNumber = '01005288219';
+                try {
+                    const r = await fetch(`${API_URL}/api/payment-info`);
+                    const d = await r.json();
+                    if (d.vodafoneNumber) vNumber = d.vodafoneNumber;
+                } catch(e) {}
                 if (totalItemsCount >= 3) {
-                    paymentAccountDetails.innerHTML = `⚠️ Since your order is 3+ pieces, please transfer half value (<strong>${halfAmount.toLocaleString()} EGP</strong>) to Vodafone Cash number:<br><strong style="color:#b83232; font-size:16px; display:inline-block; margin-top:5px;">${VODAFONE_NUMBER}</strong>`;
+                    paymentAccountDetails.innerHTML = `⚠️ Since your order is 3+ pieces, please transfer half value (<strong>${halfAmount.toLocaleString()} EGP</strong>) to Vodafone Cash number:<br><strong style="color:#b83232; font-size:16px; display:inline-block; margin-top:5px;">${vNumber}</strong>`;
                 } else {
-                    paymentAccountDetails.innerHTML = `Please transfer to Vodafone Cash number:<br><strong style="color:#b83232; font-size:16px; display:inline-block; margin-top:5px;">${VODAFONE_NUMBER}</strong>`;
+                    paymentAccountDetails.innerHTML = `Please transfer to Vodafone Cash number:<br><strong style="color:#b83232; font-size:16px; display:inline-block; margin-top:5px;">${vNumber}</strong>`;
                 }
             } else {
                 transferProofSection.classList.add('hidden');
@@ -253,7 +256,6 @@
         successModal.addEventListener('click', function (e) { if (e.target === successModal) { hideModal(); } });
         window.onload = function() { renderOrderSummary(); };
 
-        // ====== معالجة تأكيد الطلب ======
         document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             submitBtn.disabled = true;
@@ -268,7 +270,6 @@
             const notes = document.getElementById('clientNotes').value;
             const grandTotal = subtotal + shippingCost;
 
-            // بنجهز الأصناف بشكل نضيف للسيرفر: title = الموديل، color و size منفصلين
             const cleanItems = rawCartData.map(item => ({
                 title: item.title,
                 color: item.color || '',
@@ -278,11 +279,13 @@
             }));
 
             try {
+                // 1. بنبعت الأوردر كامل للسيرفر، والسيرفر هو اللي هيخصم - الأولوية لاسكندرية
                 const response = await fetch(`${API_URL}/api/sync-order`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        clientName, clientPhone, governorate, address,
+                        clientName, clientPhone, altPhone, governorate, address,
+                        paymentMethod, shippingCost, notes,
                         items: cleanItems,
                         grandTotal
                     })
@@ -296,7 +299,6 @@
                     return;
                 }
 
-                // لو فيه صنف غير متاح، نوقف ونبلغ العميلة قبل الواتساب
                 const failed = (data.results || []).filter(r => r.status !== 'تم الخصم');
                 if (failed.length > 0) {
                     const msg = failed.map(f => `${f.title} - لون ${f.color} - مقاس ${f.size} (المتاح: ${f.available})`).join('\n');
@@ -306,11 +308,18 @@
                     return;
                 }
 
-                // ====== واتساب الأدمن ======
+                // 2. بنجهز المسدجات بنفس الشكل اللي انتي كاتباه، بس بالفرع
+                // السيرفر بيرجع لكل قطعة: branch = الفرع اللي اتسحب منه فعلا
+                const branchOf = (item) => {
+                    const found = (data.results || []).find(r => r.title === item.title && r.color === (item.color || '') && r.size === item.size);
+                    return found && found.branch ? found.branch : 'الإسكندرية';
+                };
+
                 let productsText = "";
                 rawCartData.forEach((item, index) => {
-                    productsText += `\n📦 *القطعة (${index + 1}):* ${item.title}\n   - المقاس: ${item.size}\n   - اللون: ${item.color || 'Default'}\n   - الكمية: ${item.quantity}\n   - السعر: ${item.price * item.quantity} EGP`;
+                    productsText += `\n📦 *القطعة (${index + 1}):* ${item.title}\n   - المقاس: ${item.size}\n   - اللون: ${item.color || 'Default'}\n   - الكمية: ${item.quantity}\n   - السعر: ${item.price * item.quantity} EGP\n   - 🏢 الفرع: ${branchOf(item)}`;
                 });
+
                 const adminMessage = `🚨 *أوردر جديد - LENA FASHION*\n\n` +
                     `👤 *الاسم:* ${clientName}\n` +
                     `📱 *واتساب العميل:* ${clientPhone}\n` +
@@ -324,34 +333,27 @@
                     `\n💰 *الإجمالي الكلي:* ${grandTotal.toLocaleString()} EGP` +
                     `\n💳 *طريقة الدفع:* ${paymentMethod}` +
                     `\n📝 *ملاحظات:* ${notes || 'لا توجد'}`;
-                const adminData = new URLSearchParams();
-                adminData.append('token', ULTRAMSG_TOKEN);
-                adminData.append('to', STORE_WHATSAPP_NUMBER);
-                adminData.append('body', adminMessage);
-                fetch(`https://api.ultramsg.com/${ULTRAMSG_INSTANCE_ID}/messages/chat`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: adminData
-                }).catch(err => console.log('Admin Msg Error:', err));
 
-                // ====== واتساب العميلة ======
                 let clientProductsText = "";
                 rawCartData.forEach((item) => {
                     clientProductsText += `▫️ ${item.title} (مقاس: ${item.size}) - *${item.price * item.quantity} EGP*\n`;
                 });
                 let formattedClientPhone = clientPhone.trim();
                 if (formattedClientPhone.startsWith('0')) formattedClientPhone = '20' + formattedClientPhone.substring(1);
+
                 const clientMessage = `أهلاً بكِ يا *${clientName}*! ✨\nتم تسجيل طلبك بنجاح في *LENA FASHION* 🛍️\n\n` +
                     `📦 *القطعة المؤكدة:* \n` + clientProductsText + `\n` +
                     `📍 المحافظة: ${governorate}\n` +
                     `🚚 مصاريف الشحن: ${shippingCost} EGP\n` +
                     `💰 *الإجمالي الكلي بالشحن:* *${grandTotal.toLocaleString()} EGP*\n\n` +
                     `سنتواصل معكِ في أقرب وقت لتأكيد الشحن والتفاصيل. شكراً لاختيارك لينا! 💕`;
-                const clientData = new URLSearchParams();
-                clientData.append('token', ULTRAMSG_TOKEN);
-                clientData.append('to', formattedClientPhone);
-                clientData.append('body', clientMessage);
-                fetch(`https://api.ultramsg.com/${ULTRAMSG_INSTANCE_ID}/messages/chat`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: clientData
-                }).catch(err => console.log('Client Msg Error:', err));
+
+                // 3. بنبعت المسدجات للسيرفر وهو اللي يبعتها بالتوكن، مش من المتصفح
+                await fetch(`${API_URL}/api/send-whatsapp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ adminMessage, clientMessage, clientPhone: formattedClientPhone })
+                }).catch(()=>{});
 
                 successModal.classList.add('active');
 
