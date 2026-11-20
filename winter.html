@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ar="لينا فاشون | المجموعة الشتوية" data-en="LENA FASHION | Winter Collection">LENA FASHION | لينا فاشون</title>
+    <!-- خط Google Fonts + FontAwesome للأيقونات -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #111111;
+            --accent-color: #E8C0B8; /* روز جولد */
+            --bg-light: #FAFAFA;
+            --text-muted: #666666;
+            --font-main: 'Cairo', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #ffffff;
+            color: var(--primary-color);
+        }
+
+        /* شريط الإعلانات العلوي */
+        .top-banner {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 8px 15px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        /* قسم الهيرو (الواجهة) */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('323283.jpg') center/cover no-repeat;
+            height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #d8aa9f;
+        }
+
+        /* قسم العناوين المشترك */
+        .section-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        /* شبكة التصنيفات */
+        .categories-container {
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .category-card {
+            position: relative;
+            height: 285px;
+            border-radius: 8px;
+            overflow: hidden;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: block;
+        }
+
+        .category-card img {
+            width: 90%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .category-title {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* سكشن المنتجات المقترحة */
+        .full-width-section {
+            width: 100%;
+            margin-top: 80px;
+            border-top: 1px solid #eaeaea;
+            padding: 50px 40px;
+            background-color: #fafafa;
+        }
+
+        .section-container {
+            max-width: 1380px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-container h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #111;
+            font-weight: 700;
+        }
+
+        .horizontal-scroll-container {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            width: 100%;
+            scroll-behavior: smooth;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        .recommend-card {
+            background: #ffffff;
+            border: 1px solid #eaeaea;
+            padding: 15px;
+            border-radius: 6px;
+            min-width: 270px;
+            flex: 0 0 auto;
+            position: relative;
+        }
+
+        .recommend-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .sale-tag {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background-color: #b83232;
+            color: #fff;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .recommend-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .rec-price {
+            font-weight: bold;
+            color: #b83232;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .crossed {
+            color: #888;
+            text-decoration: line-through;
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .btn-mini {
+            width: 100%;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #111;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .btn-mini:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        /* الفوتر */
+        footer {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col ul li a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            border-top: 1px solid #333333;
+            padding-top: 20px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- قسم تسوقي حسب القسم -->
+    <section class="categories-container" id="categories">
+        <h2 class="section-title" data-ar="التسوق حسب الفئة" data-en="SHOP BY CATEGORY">SHOP BY CATEGORY</h2>
+        <div class="categories-grid">
+
+            <!-- 1. كوتات / QUOTES -->
+            <a href="Q.html" class="category-card">
+                <img src="tc.jpeg" alt="كوتات">
+                <div class="category-title" data-ar="كوتات" data-en="COATS">COATS</div>
+            </a>
+
+            <!-- 2. جاكيت / JACKETS -->
+            <a href="G.html" class="category-card">
+                <img src="فرو.jpeg" alt="جاكت">
+                <div class="category-title" data-ar="جاكيتات" data-en="JACKETS">JACKETS</div>
+            </a>
+
+        </div>
+    </section>
+
+    <div class="full-width-section">
+        <section class="section-container">
+            <h2 class="section-title" data-ar="وصل حديثاً" data-en="NEW ARRIVALS">NEW ARRIVALS</h2>
+            <div class="horizontal-scroll-container">
+
+                <div class="recommend-card">
+                    <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
+                    <img src="cb (1).jpeg" alt="Comfy Wide leg pants">
+                    <h3 data-ar="بنطلون واسع مريح" data-en="Comfy Wide leg pants">Comfy Wide leg pants</h3>
+                    <p class="rec-price">LE 850.00 EGP <span class="crossed">LE 1,200.00 EGP</span></p>
+                    <button class="btn-mini" data-ar="إضافة إلى السلة" data-en="ADD TO CART">ADD TO CART</button>
+                </div>
+
+                <div class="recommend-card">
+                    <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
+                    <img src="rf شتوي.jpeg" alt="Layaly Premium Set">
+                    <h3 data-ar="طقم ليالي المتميز" data-en="Layaly Premium Set">Layaly Premium Set</h3>
+                    <p class="rec-price">LE 1,950.00 EGP <span class="crossed">LE 2,650.00 EGP</span></p>
+                    <button class="btn-mini" data-ar="إضافة إلى السلة" data-en="ADD TO CART">ADD TO CART</button>
+                </div>
+
+                <div class="recommend-card">
+                    <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
+                    <img src="بوكلت.jpeg" alt="Royal Komono">
+                    <h3 data-ar="كيمونو ملكي" data-en="Royal Komono">Royal Komono</h3>
+                    <p class="rec-price">LE 1,450.00 EGP <span class="crossed">LE 2,050.00 EGP</span></p>
+                    <button class="btn-mini" data-ar="إضافة إلى السلة" data-en="ADD TO CART">ADD TO CART</button>
+                </div>
+
+                <div class="recommend-card">
+                    <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
+                    <img src="فرو.jpeg" alt="Luxury Elegance Set">
+                    <h3 data-ar="طقم الأناقة الفاخر" data-en="Luxury Elegance Set">Luxury Elegance Set</h3>
+                    <p class="rec-price">LE 2,050.00 EGP <span class="crossed">LE 2,500.00 EGP</span></p>
+                    <button class="btn-mini" data-ar="إضافة إلى السلة" data-en="ADD TO CART">ADD TO CART</button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>LENA FASHION</h3>
+                <p data-ar="براند متخصص في تقديم أحدث أزياء السيدات العصرية بلمسة من الرقي والجودة العالية." data-en="A brand specializing in providing the latest modern women's fashion with a touch of elegance and high quality.">براند متخصص في تقديم أحدث أزياء السيدات العصرية بلمسة من الرقي والجودة العالية.</p>
+            </div>
+            <div class="footer-col">
+                <h3 data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h3>
+                <ul>
+                    <li><a href="#" data-ar="عن البراند" data-en="About Brand">عن البراند</a></li>
+                    <li><a href="#" data-ar="سياسة الاستبدال والاسترجاع" data-en="Return & Exchange Policy">سياسة الاستبدال والاسترجاع</a></li>
+                    <li><a href="#" data-ar="الشحن والتوصيل" data-en="Shipping & Delivery">الشحن والتوصيل</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</h3>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i> 01228180757</li>
+                    <li><i class="fa-solid fa-envelope"></i> info@lenafashion.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p data-ar="&copy; 2026 LENA FASHION. جميع الحقوق محفوظة." data-en="&copy; 2026 LENA FASHION. All rights reserved.">&copy; 2026 LENA FASHION. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Script to sync language with Main Page Button -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Read saved language from localStorage (saved by Main Page Button)
+            let savedLang = localStorage.getItem('site_lang') || 'ar';
+            
+            // Set text direction and html language
+            document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = savedLang;
+
+            // Translate all elements with data-ar and data-en
+            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                el.innerHTML = el.getAttribute(`data-${savedLang}`);
+            });
+        });
+    </script>
+</body>
+</html>

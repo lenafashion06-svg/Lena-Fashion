@@ -1,0 +1,12 @@
+<button onclick="test()">جربي الخصم</button>
+<script>
+async function test(){
+  let res = await fetch('http://localhost:3000/api/sync-order', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({items:[{title:'TC - 1 أسود - L', quantity:1}]})
+  });
+  let data = await res.json();
+  alert(JSON.stringify(data));
+}
+</script>

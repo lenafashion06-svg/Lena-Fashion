@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Lena Fashion | لينا فاشون</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .lang-switch-container { padding: 20px 15px; border-top: 1px solid #eee; margin-top: auto; }
+        .lang-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background-color: #000; color: #fff; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .lang-btn:hover { background-color: #333; }
+        html[dir="rtl"] { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        html[dir="rtl"] .sidebar-menu { right: -100%; left: auto; transition: right 0.3s ease-in-out; }
+        html[dir="rtl"] .sidebar-menu.active { right: 0; left: auto; }
+        .cat-nav-arrows { display: flex; gap: 8px; }
+        .cat-arrow-btn { background: #f1ebd9; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .cat-arrow-btn:hover { background: #b5835a; color: #fff; }
+        .quick-view-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 10000; visibility: hidden; opacity: 0; transition: opacity 0.3s ease; }
+        .quick-view-modal.active { visibility: visible; opacity: 1; }
+        .quick-view-content { background: #fff; width: 90%; max-width: 800px; height: 85vh; border-radius: 20px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s ease; }
+        .quick-view-modal.active .quick-view-content { transform: scale(1); }
+        .close-modal-btn { position: absolute; top: 15px; right: 20px; background: #000; color: #fff; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1001; transition: background 0.3s; }
+        .close-modal-btn:hover { background: #b5835a; }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen"><h1 class="splash-logo">LENA FASHION</h1></div>
+
+    <div class="top-announcement-bar">
+        <span data-key="announcement">Welcome to our store • Free shipping on orders over 5000EGP • New arrivals just dropped</span>
+    </div>
+
+    <header class="lilly-header">
+        <div class="header-left-actions">
+            <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+            <button class="icon-btn search-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="lilly-logo"><h1>LENA FASHION</h1></div>
+        <div class="header-right-actions">
+            <a href="cart.html" class="icon-btn cart-btn" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i><span class="cart-badge">0</span></a>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="sidebar-header">
+            <h3 data-key="menu_title">Lina Fashion Menu</h3>
+            <button class="close-btn" id="closeBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span data-key="nav_home">Home</span></a></li>
+            <li><a href="blazers.html"><i class="fa-solid fa-shirt"></i> <span data-key="link_blazers">Blazers</span></a></li>
+            <li><a href="pant.html"><i class="fa-solid fa-person-walking"></i> <span data-key="link_pants">Pants</span></a></li>
+            <li><a href="formal.html"><i class="fa-solid fa-briefcase"></i> <span data-key="link_formal">Formal collection</span></a></li>
+            <li><a href="winter.html"><i class="fa-solid fa-snowflake"></i> <span data-key="link_winter">Winter collection</span></a></li>
+            <li><a href="offers.html"><i class="fa-solid fa-tags"></i> <span data-key="link_offers">Offers</span></a></li>
+        </ul>
+        <div class="lang-switch-container">
+            <button class="lang-btn" id="langToggleBtn"><i class="fa-solid fa-globe"></i><span id="langText">العربية</span></button>
+        </div>
+    </div>
+
+    <section class="hero-slider" id="heroSlider">
+        <div class="slide active" style="background-image: url('front.jpeg');">
+            <div class="hero-overlay"></div>
+            <div class="hero-center">
+                <p class="hero-small" data-key="hero1_small">Where elegance meets confidence</p>
+                <h2 data-key="hero1_title">LENA FASHION</h2>
+                <a href="#shop" class="gallery-btn" data-key="hero_btn">VIEW PRODUCTS</a>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('front1.jpeg');">
+            <div class="hero-overlay"></div>
+            <div class="hero-center">
+                <p class="hero-small" data-key="hero2_small">Elegance in every detail</p>
+                <h2 data-key="hero2_title">NEW ARRIVALS</h2>
+                <a href="#shop" class="gallery-btn" data-key="hero_btn">VIEW PRODUCTS</a>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('front2.jpeg');">
+            <div class="hero-overlay"></div>
+            <div class="hero-center">
+                <p class="hero-small" data-key="hero3_small">Chic looks for unforgettable evenings</p>
+                <h2 data-key="hero3_title">EVENING WEAR</h2>
+                <a href="#shop" class="gallery-btn" data-key="hero_btn">VIEW PRODUCTS</a>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('front.jpeg');">
+            <div class="hero-overlay"></div>
+            <div class="hero-center">
+                <p class="hero-small" data-key="hero4_small">Timeless style, modern soul</p>
+                <h2 data-key="hero4_title">KAFTANS</h2>
+                <a href="#shop" class="gallery-btn" data-key="hero_btn">VIEW PRODUCTS</a>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('front1.jpeg');">
+            <div class="hero-overlay"></div>
+            <div class="hero-center">
+                <p class="hero-small" data-key="hero5_small">Warmth with elegance</p>
+                <h2 data-key="hero5_title">FALL / WINTER</h2>
+                <a href="#shop" class="gallery-btn" data-key="hero_btn">VIEW PRODUCTS</a>
+            </div>
+        </div>
+        <div class="slider-controls">
+            <div class="slider-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+                <span class="dot" data-slide="4"></span>
+            </div>
+        </div>
+    </section>
+
+    <div class="ticker-wrap">
+        <div class="ticker"><span>✦ END OF SEASON SALE ✦ LENA FASHION NEW COLLECTION ✦ FREE SHIPPING OVER 5000 EGP ✦ END OF SEASON SALE ✦</span></div>
+    </div>
+
+    <section class="categories-section" id="shop">
+        <div class="section-header">
+            <h2 data-key="shop_by_cat">SHOP BY CATEGORIES</h2>
+            <div class="cat-nav-arrows">
+                <button class="cat-arrow-btn" id="catPrev"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="cat-arrow-btn" id="catNext"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="categories-scroll-wrapper" id="catScroll">
+            <a href="formal.html" class="category-card"><img src="PAR.jpeg" alt="FORMAL COLLECTION"><div class="card-tag"><span data-key="link_blazers">FORMAL COLLECTION</span><i class="fa-solid fa-arrow-right"></i></div></a>
+            <a href="winter.html" class="category-card"><img src="PAR2.jpeg" alt="WINTER COLLECTION"><div class="card-tag"><span data-key="link_pants">WINTER COLLECTION</span><i class="fa-solid fa-arrow-right"></i></div></a>
+            <a href="blazers.html" class="category-card"><img src="blazer.jpeg" alt="BLAZER"><div class="card-tag"><span data-key="link_formal">BLAZER</span><i class="fa-solid fa-arrow-right"></i></div></a>
+            <a href="Q.html" class="category-card"><img src="tc.jpeg" alt="COAT"><div class="card-tag"><span data-key="link_winter">COAT</span><i class="fa-solid fa-arrow-right"></i></div></a>
+            <a href="offers.html" class="category-card"><img src="O.jpeg" alt="Offers"><div class="card-tag"><span data-key="link_offers">Offers</span><i class="fa-solid fa-arrow-right"></i></div></a>
+        </div>
+    </section>
+
+    <!-- NEW ARRIVALS زي The Gallery بالظبط - بس بخلفيتك الفاتحة -->
+    <section class="new-arrivals-section" id="newArrivals">
+        <div class="new-arrivals-header">
+            <p class="featured-label" data-key="featured_label">Featured collection</p>
+            <h2 data-key="new_arrivals_title">NEW ARRIVALS</h2>
+        </div>
+
+        <div class="new-arrivals-grid">
+            <div class="new-product-card reveal" onclick="openProductModal('bab.html')">
+                <div class="new-product-img"><img src="BAB.jpeg" alt="Classic Blazer"></div>
+                <h3 class="new-product-name" data-key="prod_1_name">Classic Blazer</h3>
+                <p class="new-product-price">LE 1,250.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('TMX.html')">
+                <div class="new-product-img"><img src="tmx.jpg" alt="Trench coat"></div>
+                <h3 class="new-product-name" data-key="prod_2_name">Trench coat</h3>
+                <p class="new-product-price">LE 1,499.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('LWPL.html')">
+                <div class="new-product-img"><img src="lwpl.jpeg" alt="PANT"></div>
+                <h3 class="new-product-name" data-key="prod_3_name">PANT</h3>
+                <p class="new-product-price">LE 965.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('V.html')">
+                <div class="new-product-img"><img src="V.jpeg" alt="VEST"></div>
+                <h3 class="new-product-name" data-key="prod_4_name">VEST</h3>
+                <p class="new-product-price">LE 1,075.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('d.html')">
+                <div class="new-product-img"><img src="DRESS.jpeg" alt="DRESS"></div>
+                <h3 class="new-product-name" data-key="prod_5_name">DRESS</h3>
+                <p class="new-product-price">LE 2,550.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('BAR.html')">
+                <div class="new-product-img"><img src="BAR1.jpeg" alt="BLAZER"></div>
+                <h3 class="new-product-name" data-key="prod_6_name">BLAZER</h3>
+                <p class="new-product-price">LE 1,199.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('bab.html')">
+                <div class="new-product-img"><img src="DRESS.jpeg" alt="DRESS"></div>
+                <h3 class="new-product-name">Elegant Dress</h3>
+                <p class="new-product-price">LE 2,100.00 EGP</p>
+            </div>
+            <div class="new-product-card reveal" onclick="openProductModal('TMX.html')">
+                <div class="new-product-img"><img src="tc.jpeg" alt="COAT"></div>
+                <h3 class="new-product-name">Winter Coat</h3>
+                <p class="new-product-price">LE 1,850.00 EGP</p>
+            </div>
+        </div>
+
+        <div class="view-all-wrap">
+            <a href="offers.html" class="view-all-btn" data-key="view_all_btn">VIEW ALL PRODUCTS</a>
+        </div>
+    </section>
+
+    <div class="quick-view-modal" id="quickViewModal">
+        <div class="quick-view-content">
+            <button class="close-modal-btn" onclick="closeProductModal()"><i class="fa-solid fa-xmark"></i></button>
+            <iframe id="quickViewFrame" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <section class="about-section">
+        <div class="about-text">
+            <h3 data-key="about_sub">ABOUT US</h3>
+            <h2 data-key="about_title">Welcome To Lina Fashion</h2>
+            <p data-key="about_desc">Founded with a passion for sophisticated style, Lina Fashion brings you curated looks from around the world. We believe fashion is a form of self-expression, and we're here to help you define yours.</p>
+        </div>
+        <div class="about-images">
+            <div class="badge-circle"><span data-key="badge_text">BEAUTY BEGINS WITH CONFIDENCE • STYLE & ATTITUDE</span></div>
+            <div class="grid-photos">
+                <img src="فرو.jpeg"><img src="PANT.jpeg"><img src="DRESS.jpeg" alt="Fashion 3"><img src="tc.jpeg" alt="Fashion 4">
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-col"><h4>Lina Fashion</h4><p><i class="fa-solid fa-location-dot"></i> <span data-key="loc_alex">Q Lina Fashion, Building 70, 1st Floor, Taaweniyat Smouha, Smouha, Alexandria, Egypt</span></p><p><i class="fa-solid fa-location-dot"></i> <span data-key="loc_cairo">Q Lina Fashion,Nasr City, Cairo, Egypt</span></p></div>
+        <div class="footer-col"><h4 data-key="footer_quick">Quick Fashion</h4><p><i class="fa-solid fa-phone"></i> 01222948247</p><p><i class="fa-solid fa-envelope"></i> hello@linafashion.com</p></div>
+        <div class="footer-col"><h4 data-key="footer_follow">Follow Us</h4><div class="social-icons"><i class="fa-brands fa-facebook-f"></i><i class="fa-brands fa-instagram"></i><i class="fa-brands fa-whatsapp"></i><i class="fa-brands fa-pinterest"></i></div></div>
+        <div class="footer-col logo-col"><h2>LENA FASHION</h2></div>
+    </footer>
+    <div class="footer-bottom"><p>© 2026 Lina Fashion. All rights reserved.</p></div>
+
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item active"><i class="fa-solid fa-store"></i><span>Shop</span></a>
+        <a href="#" class="nav-item"><i class="fa-regular fa-heart"></i><span>Wishlist</span></a>
+        <a href="cart.html" class="nav-item cart-icon-tab"><i class="fa-solid fa-bag-shopping"></i><span class="cart-badge-tab">0</span><span>Cart</span></a>
+        <a href="#" class="nav-item"><i class="fa-regular fa-user"></i><span>Account</span></a>
+        <a href="#" class="nav-item" id="searchTabBtn"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></a>
+    </nav>
+
+    <div class="search-modal" id="searchModal">
+      <div class="search-box">
+        <button class="close-search" id="closeSearchBtn"><i class="fa-solid fa-xmark"></i></button>
+        <h3 data-key="search_title">Search</h3>
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Search for blazer, coat, dress...">
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        menuBtn.addEventListener('click', () => { sidebarMenu.classList.add('active'); sidebarOverlay.classList.add('active'); });
+        closeBtn.addEventListener('click', () => { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active'); });
+        sidebarOverlay.addEventListener('click', () => { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.remove('active'); });
+
+        const translations = {
+            en: {
+                announcement: "Welcome to our store • Free shipping on orders over 5000EGP • New arrivals just dropped",
+                nav_home: "Home", menu_title: "Lina Fashion Menu",
+                link_blazers: "FORMAL COLLECTION", link_pants: "WINTER COLLECTION", link_formal: "BLAZER", link_winter: "COAT", link_offers: "Offers",
+                hero1_small: "Where elegance meets confidence", hero1_title: "LENA FASHION",
+                hero2_small: "Elegance in every detail", hero2_title: "NEW ARRIVALS",
+                hero3_small: "Chic looks for unforgettable evenings", hero3_title: "EVENING WEAR",
+                hero4_small: "Timeless style, modern soul", hero4_title: "KAFTANS",
+                hero5_small: "Warmth with elegance", hero5_title: "FALL / WINTER",
+                hero_btn: "VIEW PRODUCTS",
+                featured_label: "Featured collection", new_arrivals_title: "NEW ARRIVALS", view_all_btn: "VIEW ALL PRODUCTS",
+                search_title: "Search", search_placeholder: "Search for blazer, coat, dress...", search_no_result: "No results found",
+                shop_by_cat: "SHOP BY CATEGORIES",
+                prod_1_name: "Classic Blazer", prod_2_name: "Trench coat", prod_3_name: "PANT", prod_4_name: "VEST", prod_5_name: "DRESS", prod_6_name: "BLAZER",
+                about_sub: "ABOUT US", about_title: "Welcome To Lina Fashion",
+                about_desc: "Founded with a passion for sophisticated style, Lina Fashion brings you curated looks from around the world. We believe fashion is a form of self-expression, and we're here to help you define yours.",
+                badge_text: "BEAUTY BEGINS WITH CONFIDENCE • STYLE & ATTITUDE",
+                loc_alex: "Q Lina Fashion, Building 70, 1st Floor, Taaweniyat Smouha, Smouha, Alexandria, Egypt",
+                loc_cairo: "Q Lina Fashion,Nasr City, Cairo, Egypt",
+                footer_quick: "Quick Fashion", footer_follow: "Follow Us", btn_lang: "العربية"
+            },
+            ar: {
+                announcement: "مرحباً بكم في متجرنا • شحن مجاني للطلبات الأكبر من 5000 جنيه • وصل حديثاً تشكيلة جديدة",
+                nav_home: "الرئيسية", menu_title: "قائمة لينا فاشون",
+                link_blazers: "بليزرات", link_pants: "بنطلونات", link_formal: "المجموعة الرسمية", link_winter: "المجموعة الشتوية", link_offers: "العروض",
+                hero1_small: "حيث تلتقي الأناقة بالثقة", hero1_title: "لينا فاشون",
+                hero2_small: "الأناقة في كل تفصيلة", hero2_title: "وصل حديثاً",
+                hero3_small: "إطلالات أنيقة لسهرات لا تُنسى", hero3_title: "ملابس سهرة",
+                hero4_small: "أناقة خالدة بروح عصرية", hero4_title: "قفاطين",
+                hero5_small: "دفء بأناقة", hero5_title: "خريف / شتاء",
+                hero_btn: "عرض المنتجات",
+                featured_label: "تشكيلة مميزة", new_arrivals_title: "وصل حديثاً", view_all_btn: "عرض كل المنتجات",
+                search_title: "بحث", search_placeholder: "دوري على بليزر، معطف، فستان...", search_no_result: "لا توجد نتائج",
+                shop_by_cat: "تسوقي حسب التصنيف",
+                prod_1_name: "بليزر كلاسيكي", prod_2_name: "معطف ترنش", prod_3_name: "بنطلون", prod_4_name: "فيست", prod_5_name: "فستان", prod_6_name: "بليزر",
+                about_sub: "من نحن", about_title: "مرحباً بكم في لينا فاشون",
+                about_desc: "تأسست لينا فاشون بشغف للموضة الأنيقة، لتقدم لكِ أحدث الإطلالات المختارة بعناية. نؤمن بأن الموضة طريقة للتعبير عن الذات، ونحن هنا لنساعدكِ في تحديد أسلوبك الخاص.",
+                badge_text: "الجمال يبدأ بالثقة • الأناقة والأسلوب",
+                loc_alex: "لينا فاشون، عمارة 70، الدور الأول، تعاونيات سموحة، سموحة، الإسكندرية، مصر",
+                loc_cairo: "لينا فاشون، مدينة نصر، القاهرة، مصر",
+                footer_quick: "روابط سريعة", footer_follow: "تابعينا", btn_lang: "English"
+            }
+        };
+        const langToggleBtn = document.getElementById('langToggleBtn');
+        const langText = document.getElementById('langText');
+        function applyLanguage(lang) {
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) element.innerHTML = translations[lang][key];
+            });
+            const searchInputEl = document.getElementById('searchInput');
+            if (searchInputEl && translations[lang].search_placeholder) searchInputEl.placeholder = translations[lang].search_placeholder;
+            if (langText) langText.textContent = translations[lang].btn_lang;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = localStorage.getItem('site_lang') || 'en';
+            applyLanguage(savedLang);
+            if (langToggleBtn) langToggleBtn.addEventListener('click', () => {
+                let currentLang = localStorage.getItem('site_lang') || 'en';
+                let newLang = currentLang === 'en' ? 'ar' : 'en';
+                localStorage.setItem('site_lang', newLang);
+                applyLanguage(newLang);
+            });
+        });
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const heroSlider = document.getElementById('heroSlider');
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        let slideInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
+        dots.forEach((dot, index) => dot.addEventListener('click', () => { showSlide(index); resetTimer(); }));
+        function resetTimer() { clearInterval(slideInterval); slideInterval = setInterval(() => showSlide(currentSlide + 1), 6000); }
+        let touchStartX = 0;
+        heroSlider.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        heroSlider.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) { showSlide(currentSlide + 1); resetTimer(); }
+            if (touchEndX - touchStartX > 50) { showSlide(currentSlide - 1); resetTimer(); }
+        });
+        const catScroll = document.getElementById('catScroll');
+        document.getElementById('catNext').addEventListener('click', () => catScroll.scrollBy({ left: 300, behavior: 'smooth' }));
+        document.getElementById('catPrev').addEventListener('click', () => catScroll.scrollBy({ left: -300, behavior: 'smooth' }));
+        function openProductModal(pageUrl) { document.getElementById('quickViewFrame').src = pageUrl; document.getElementById('quickViewModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeProductModal() { document.getElementById('quickViewModal').classList.remove('active'); document.getElementById('quickViewFrame').src = ''; document.body.style.overflow = 'auto'; }
+        document.getElementById('quickViewModal').addEventListener('click', (e) => { if(e.target === document.getElementById('quickViewModal')) closeProductModal(); });
+
+        // حركة الصور اللذيذة - بتطلع لفوق لما توصليلها
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), (i % 2) * 120);
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        document.querySelectorAll('.search-btn, #searchTabBtn').forEach(btn=>{
+          btn.addEventListener('click', (e)=>{ e.preventDefault(); searchModal.classList.add('active'); setTimeout(()=> searchInput.focus(), 100); });
+        });
+        document.getElementById('closeSearchBtn').addEventListener('click', ()=> searchModal.classList.remove('active'));
+        searchModal.addEventListener('click', (e)=>{ if(e.target===searchModal) searchModal.classList.remove('active'); });
+        const allProducts = [
+          {name:'Classic Blazer', price:'1,250 EGP', img:'BAB.jpeg', link:'bab.html'},
+          {name:'Trench coat', price:'1,499 EGP', img:'tmx.jpg', link:'TMX.html'},
+          {name:'PANT', price:'965 EGP', img:'lwpl.jpeg', link:'LWPL.html'},
+          {name:'VEST', price:'1,075 EGP', img:'V.jpeg', link:'V.html'},
+          {name:'DRESS', price:'2,550 EGP', img:'DRESS.jpeg', link:'d.html'},
+          {name:'BLAZER', price:'1,199 EGP', img:'BAR1.jpeg', link:'BAR.html'},
+          {name:'FORMAL COLLECTION', price:'', img:'PAR.jpeg', link:'formal.html'},
+          {name:'WINTER COLLECTION', price:'', img:'PAR2.jpeg', link:'winter.html'},
+          {name:'COAT', price:'', img:'tc.jpeg', link:'Q.html'},
+          {name:'Offers', price:'', img:'O.jpeg', link:'offers.html'},
+        ];
+        searchInput.addEventListener('input', ()=>{
+          const q = searchInput.value.trim().toLowerCase();
+          if(!q){ searchResults.innerHTML=''; return; }
+          const found = allProducts.filter(p=> p.name.toLowerCase().includes(q));
+          if(found.length===0){
+            const lang = localStorage.getItem('site_lang')||'en';
+            searchResults.innerHTML = `<p style="text-align:center;color:#888;padding:15px">${translations[lang].search_no_result}</p>`;
+            return;
+          }
+          searchResults.innerHTML = found.map(p=>`
+            <a class="search-item" href="${p.link}">
+              <img src="${p.img}"><div><b>${p.name}</b><br><span>${p.price}</span></div>
+            </a>`).join('');
+        });
+    </script>
+</body>
+</html>

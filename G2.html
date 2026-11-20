@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-ar="لينا فاشون - الجاكيتات (صفحة 2)" data-en="LENA FASHION - Jackets (Page 2)">LENA FASHION - Jackets</title>
+    <!-- مكتبة الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f3f3;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* شريط البحث العلوي */
+        .search-header {
+            background-color: #fff;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1.5px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .action-icon {
+            color: #000;
+            font-size: 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #000;
+            border-radius: 4px;
+            padding: 8px 12px;
+            background: #fff;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            text-align: right;
+            padding-right: 8px;
+            background: transparent;
+        }
+
+        .search-box .camera-icon,
+        .search-box .search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            color: #000;
+            padding: 0 4px;
+        }
+
+        /* حاوية المنتجات */
+        .products-grid-container {
+            width: 100%;
+            padding: 15px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* شبكة المنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* كارت المنتج */
+        .product-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eee;
+            text-align: right;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-img-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .product-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .brand-tag {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-weight: bold;
+            font-size: 12px;
+            font-style: italic;
+            color: #000;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 3px 6px;
+            border-radius: 3px;
+        }
+
+        .product-info {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 13px;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-subtitle {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .badge {
+            color: #b8860b;
+            font-weight: bold;
+        }
+
+        .sold-info {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 8px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: bold;
+            color: #b12704;
+        }
+
+        .add-to-cart-btn {
+            background: none;
+            border: 1.5px solid #ccc;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333;
+            transition: 0.2s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            padding: 8px 12px;
+            transition: 0.3s;
+        }
+
+        .home-btn:hover {
+            color: #007bff;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+
+        .page-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #22252a;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #22252a;
+            width: 45px;
+            height: 45px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+        }
+
+        .page-btn:hover:not(.active) {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- حاوية شبكة المنتجات الرئيسية -->
+    <div class="products-grid-container">
+        <div class="products-grid">
+
+            <!-- المنتج الأول -->
+            <a href="TE.html" style="text-decoration: none; color: indianred;">
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <span class="brand-tag">LENA FASHION</span>
+                        <img src="TE (1).jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title" data-ar="بليزر نسائي فرانشليا..." data-en="Françlia Women's Blazer...">Françlia Women's Blazer...</div>
+                        <div class="product-subtitle"><span class="badge" data-ar="#1 الأكثر مبيعاً" data-en="#1 Bestseller">#1 Bestseller</span></div>
+                        <div class="sold-info" data-ar="أكثر من 100 مبيعة" data-en="100+ sold">100+ sold</div>
+                        <div class="product-footer">
+                            <span class="product-price">1199.00EGP</span>
+                            <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- المنتج الثاني -->
+            <a href="جلد.html" style="text-decoration: none; color: indianred;">
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <span class="brand-tag">LENA FASHION</span>
+                        <img src="جلد BG (1).jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title" data-ar="بليزر أنيق فرانشليا..." data-en="Françlia Elegant Blazer...">Françlia Elegant Blazer...</div>
+                        <div class="product-subtitle" data-ar="160+ يقولون &quot;جودة ممتازة&quot;" data-en="160+ Say &quot;Good Quality&quot;">160+ Say "Good Quality"</div>
+                        <div class="sold-info" data-ar="أكثر من 300 مبيعة" data-en="300+ sold">300+ sold</div>
+                        <div class="product-footer">
+                            <span class="product-price">1450.00EGP</span>
+                            <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- المنتج الثالث -->
+            <a href="wbyl.html" style="text-decoration: none; color: indianred;">
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <span class="brand-tag">LENA FASHION</span>
+                        <img src="wbyl.jpg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title" data-ar="بليزر نسائي فرانشليا..." data-en="Françlia Women's Blazer...">Françlia Women's Blazer...</div>
+                        <div class="product-subtitle"><span class="badge" data-ar="#1 الأكثر مبيعاً" data-en="#1 Bestseller">#1 Bestseller</span></div>
+                        <div class="sold-info" data-ar="أكثر من 100 مبيعة" data-en="100+ sold">100+ sold</div>
+                        <div class="product-footer">
+                            <span class="product-price">1199.00EGP</span>
+                            <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- المنتج الرابع -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر أنيق فرانشليا..." data-en="Françlia Elegant Blazer...">Françlia Elegant Blazer...</div>
+                    <div class="product-subtitle" data-ar="160+ يقولون &quot;جودة ممتازة&quot;" data-en="160+ Say &quot;Good Quality&quot;">160+ Say "Good Quality"</div>
+                    <div class="sold-info" data-ar="أكثر من 300 مبيعة" data-en="300+ sold">300+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1450.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج الخامس -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر نسائي فرانشليا..." data-en="Françlia Women's Blazer...">Françlia Women's Blazer...</div>
+                    <div class="product-subtitle"><span class="badge" data-ar="#1 الأكثر مبيعاً" data-en="#1 Bestseller">#1 Bestseller</span></div>
+                    <div class="sold-info" data-ar="أكثر من 100 مبيعة" data-en="100+ sold">100+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1550.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج السادس -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر أنيق فرانشليا..." data-en="Françlia Elegant Blazer...">Françlia Elegant Blazer...</div>
+                    <div class="product-subtitle" data-ar="160+ يقولون &quot;جودة ممتازة&quot;" data-en="160+ Say &quot;Good Quality&quot;">160+ Say "Good Quality"</div>
+                    <div class="sold-info" data-ar="أكثر من 300 مبيعة" data-en="300+ sold">300+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1250.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج السابع -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر نسائي فرانشليا..." data-en="Françlia Women's Blazer...">Françlia Women's Blazer...</div>
+                    <div class="product-subtitle"><span class="badge" data-ar="#1 الأكثر مبيعاً" data-en="#1 Bestseller">#1 Bestseller</span></div>
+                    <div class="sold-info" data-ar="أكثر من 100 مبيعة" data-en="100+ sold">100+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1250.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج الثامن -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر أنيق فرانشليا..." data-en="Françlia Elegant Blazer...">Françlia Elegant Blazer...</div>
+                    <div class="product-subtitle" data-ar="160+ يقولون &quot;جودة ممتازة&quot;" data-en="160+ Say &quot;Good Quality&quot;">160+ Say "Good Quality"</div>
+                    <div class="sold-info" data-ar="أكثر من 300 مبيعة" data-en="300+ sold">300+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1450.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج التاسع -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر نسائي فرانشليا..." data-en="Françlia Women's Blazer...">Françlia Women's Blazer...</div>
+                    <div class="product-subtitle"><span class="badge" data-ar="#1 الأكثر مبيعاً" data-en="#1 Bestseller">#1 Bestseller</span></div>
+                    <div class="sold-info" data-ar="أكثر من 100 مبيعة" data-en="100+ sold">100+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1250.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج العاشر -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر أنيق فرانشليا..." data-en="Françlia Elegant Blazer...">Françlia Elegant Blazer...</div>
+                    <div class="product-subtitle" data-ar="160+ يقولون &quot;جودة ممتازة&quot;" data-en="160+ Say &quot;Good Quality&quot;">160+ Say "Good Quality"</div>
+                    <div class="sold-info" data-ar="أكثر من 300 مبيعة" data-en="300+ sold">300+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1550.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج الحادي عشر -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر نسائي فرانشليا..." data-en="Françlia Women's Blazer...">Françlia Women's Blazer...</div>
+                    <div class="product-subtitle"><span class="badge" data-ar="#1 الأكثر مبيعاً" data-en="#1 Bestseller">#1 Bestseller</span></div>
+                    <div class="sold-info" data-ar="أكثر من 100 مبيعة" data-en="100+ sold">100+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">1550.00EGP</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المنتج الثاني عشر -->
+            <div class="product-card">
+                <div class="product-img-container">
+                    <span class="brand-tag">LENA FASHION</span>
+                    <img src="https://via.placeholder.com/300x380" alt="Product">
+                </div>
+                <div class="product-info">
+                    <div class="product-title" data-ar="بليزر أنيق فرانشليا..." data-en="Françlia Elegant Blazer...">Françlia Elegant Blazer...</div>
+                    <div class="product-subtitle" data-ar="160+ يقولون &quot;جودة ممتازة&quot;" data-en="160+ Say &quot;Good Quality&quot;">160+ Say "Good Quality"</div>
+                    <div class="sold-info" data-ar="أكثر من 300 مبيعة" data-en="300+ sold">300+ sold</div>
+                    <div class="product-footer">
+                        <span class="product-price">00</span>
+                        <button class="add-to-cart-btn"><i class="fas fa-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- أزرار التنقل (Pagination) -->
+    <div class="pagination-container">
+        <a href="G.html" class="page-btn">1</a>
+        <a href="G2.html" class="page-btn active">2</a>
+        <a href="#" class="page-btn">3</a>
+        <a href="blazers-page2.html" class="page-btn">&gt;</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedLang = localStorage.getItem('site_lang') || 'ar';
+            
+            document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = savedLang;
+
+            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                el.innerHTML = el.getAttribute(`data-${savedLang}`);
+            });
+        });
+    </script>
+</body>
+
+</html>
