@@ -224,12 +224,13 @@
             } else if (currentPayment === 'Vodafone Cash') {
                 transferProofSection.classList.remove('hidden');
                 receiptInput.required = false;
-                // رقم فودافون بيجي من السيرفر
+                // رقم فودافون بيجي من GitHub مباشرة، مش من Railway
                 let vNumber = '01005288219';
                 try {
-                    const r = await fetch(`${API_URL}/api/payment-info`);
+                    const r = await fetch('https://raw.githubusercontent.com/lenafashion06-svg/Lena-Fashion/main/payment-info.json');
                     const d = await r.json();
                     if (d.vodafoneNumber) vNumber = d.vodafoneNumber;
+                    else if (d.vodafone) vNumber = d.vodafone;
                 } catch(e) {}
                 if (totalItemsCount >= 3) {
                     paymentAccountDetails.innerHTML = `⚠️ Since your order is 3+ pieces, please transfer half value (<strong>${halfAmount.toLocaleString()} EGP</strong>) to Vodafone Cash number:<br><strong style="color:#b83232; font-size:16px; display:inline-block; margin-top:5px;">${vNumber}</strong>`;
