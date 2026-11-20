@@ -6,6 +6,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ====== بيانات الواتساب - حطيها في Railway Variables مش هنا ======
+// في Railway -> Variables حطي:
+// ULTRAMSG_INSTANCE_ID, ULTRAMSG_TOKEN, STORE_WHATSAPP_NUMBER, VODAFONE_NUMBER
+const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "instance196362";
+const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "agyfoi0qg5lnqbum";
+const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "201558025074";
+const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "01005288219";
+
 function norm(s) {
     return (s || '')
         .replace(/\s+/g, '')
@@ -130,9 +138,47 @@ async function createWTWRequest(pool, warehouseID, model, color, size, qtyToDedu
     return true;
 }
 
+// ====== رقم فودافون كاش - الصفحة بتجيبه من هنا مش من الكود ======
+app.get('/api/payment-info', (req, res) => {
+    res.json({ vodafoneNumber: VODAFONE_NUMBER });
+});
+
+// ====== واتساب - السيرفر هو اللي بيبعت بالتوكن، مش المتصفح ======
+async function sendWhatsApp(to, body) {
+    try {
+        const params = new URLSearchParams();
+        params.append('token', ULTRAMSG_TOKEN);
+        params.append('to', to);
+        params.append('body', body);
+        const r = await fetch(`https://api.ultramsg.com/${ULTRAMSG_INSTANCE_ID}/messages/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params
+        });
+        const j = await r.json().catch(()=>({}));
+        console.log('WhatsApp to', to, '->', j.sent || j.message || 'sent');
+        return true;
+    } catch(e) {
+        console.log('WhatsApp Error:', e.message);
+        return false;
+    }
+}
+
+app.post('/api/send-whatsapp', async (req, res) => {
+    try {
+        const { adminMessage, clientMessage, clientPhone } = req.body;
+        if (adminMessage) await sendWhatsApp(STORE_WHATSAPP_NUMBER, adminMessage);
+        if (clientMessage && clientPhone) await sendWhatsApp(clientPhone, clientMessage);
+        res.json({ success: true });
+    } catch(err) {
+        res.json({ success: false, error: err.message });
+    }
+});
+
 app.post('/api/sync-order', async (req, res) => {
     try {
-        const { items, clientName } = req.body;
+        // دلوقتي بنستقبل كل بيانات العميلة مش الاسم بس
+        const { items, clientName, clientPhone, altPhone, governorate, address, paymentMethod, shippingCost, notes, grandTotal } = req.body;
         let pool = await poolPromise;
         let results = [];
         for (let item of items) {
@@ -141,20 +187,28 @@ app.post('/api/sync-order', async (req, res) => {
             const size = item.size || '';
             const quantity = item.quantity || 1;
             if (!model) continue;
-            console.log(`> هخصم ${quantity} من: موديل=${model} لون=${color} مقاس=${size} - عميلة: ${clientName || ''}`);
+            console.log(`> هخصم ${quantity} من: موديل=${model} لون=${color} مقاس=${size} - عميلة: ${clientName || ''} - دفع: ${paymentMethod || ''} - محافظة: ${governorate || ''} - تليفون بديل: ${altPhone || ''} - ملاحظات: ${notes || ''} - اجمالي: ${grandTotal || ''}`);
             const { all, filtered } = await getStock(pool, model, color, size);
             const row = filtered[0];
             if (!row || row.WebAvailableQty < quantity) {
                 const avail = all.filter(r => (r.SizeName || '').trim() === (size || '').trim() && r.WebAvailableQty > 0);
                 console.log(`> غير متاح - المتاح: ${row?.WebAvailableQty ?? 0} - الألوان المتاحة: ${avail.map(r=>r.ColorName).join(' | ')}`);
-                results.push({ title: item.title, color, size, status: 'غير متاح', available: row?.WebAvailableQty ?? 0, availableColors: avail });
+                results.push({ title: item.title, color, size, status: 'غير متاح', available: row?.WebAvailableQty ?? 0, availableColors: avail, branch: '' });
                 continue;
             }
+            // ====== الأولوية: اسكندرية (مخزن 1) الأول، وبعدين القاهرة (مخزن 2) ======
             const deductAlex = Math.min(row.AlexQty, quantity);
             const deductCairo = quantity - deductAlex;
             const ok1 = await createWTWRequest(pool, 1, model, color, size, deductAlex);
             const ok2 = await createWTWRequest(pool, 2, model, color, size, deductCairo);
-            results.push({ title: item.title, color, size, status: (ok1 || ok2) ? 'تم الخصم' : 'فشل' });
+
+            // اسم الفرع اللي اتسحب منه فعلا
+            let branch = '';
+            if (deductAlex > 0 && deductCairo > 0) branch = `الإسكندرية (${deductAlex}) + القاهرة (${deductCairo})`;
+            else if (deductAlex > 0) branch = 'الإسكندرية';
+            else if (deductCairo > 0) branch = 'القاهرة';
+
+            results.push({ title: item.title, color, size, status: (ok1 || ok2) ? 'تم الخصم' : 'فشل', branch, deductAlex, deductCairo });
         }
         res.json({ success: true, results });
     } catch (err) {
@@ -177,4 +231,5 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log(`Server running on port 3000`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
