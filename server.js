@@ -10,21 +10,24 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
 app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
 
-// ====== بيانات الواتساب والإيميل - كلها في Railway Variables مش هنا ======
-// في Railway -> Variables حطي:
-// ULTRAMSG_INSTANCE_ID, ULTRAMSG_TOKEN, STORE_WHATSAPP_NUMBER, VODAFONE_NUMBER, GMAIL_APP_PASSWORD
 const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "";
 const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "";
 const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "";
 const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "";
 
-// ====== إعداد الإيميل - بيبعت من lenafashion@gmail.com ======
+// ====== إيميل سريع - بورت 587 + Timeout ======
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
     user: 'lenafashion@gmail.com',
-    pass: process.env.GMAIL_APP_PASSWORD // الـ 16 رقم اللي عملتيه - متحطيهوش هنا، حطيه في Variables
-  }
+    pass: process.env.GMAIL_APP_PASSWORD
+  },
+  connectionTimeout: 8000,
+  greetingTimeout: 8000,
+  socketTimeout: 8000
 });
 
 function norm(s) {
@@ -155,8 +158,11 @@ app.get('/api/payment-info', (req, res) => {
     res.json({ vodafoneNumber: VODAFONE_NUMBER });
 });
 
+// ====== واتساب - Timeout 10 ثواني عشان ميعلقش ======
 async function sendWhatsApp(to, body) {
     try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
         const params = new URLSearchParams();
         params.append('token', ULTRAMSG_TOKEN);
         params.append('to', to);
@@ -164,8 +170,10 @@ async function sendWhatsApp(to, body) {
         const r = await fetch(`https://api.ultramsg.com/${ULTRAMSG_INSTANCE_ID}/messages/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params
+            body: params,
+            signal: controller.signal
         });
+        clearTimeout(timeout);
         const j = await r.json().catch(()=>({}));
         console.log('WhatsApp to', to, '->', j.sent || j.message || 'sent');
         return true;
@@ -175,21 +183,29 @@ async function sendWhatsApp(to, body) {
     }
 }
 
+// ====== واتساب - بيبعت للمتجر والعميلة مع بعض ======
 app.post('/api/send-whatsapp', async (req, res) => {
     try {
         const { adminMessage, clientMessage, clientPhone } = req.body;
-        if (adminMessage) await sendWhatsApp(STORE_WHATSAPP_NUMBER, adminMessage);
-        if (clientMessage && clientPhone) await sendWhatsApp(clientPhone, clientMessage);
+        const jobs = [];
+        if (adminMessage) jobs.push(sendWhatsApp(STORE_WHATSAPP_NUMBER, adminMessage));
+        if (clientMessage && clientPhone) jobs.push(sendWhatsApp(clientPhone, clientMessage));
+        await Promise.all(jobs);
         res.json({ success: true });
     } catch(err) {
         res.json({ success: false, error: err.message });
     }
 });
 
-// ====== الإيميل - بيبعت نفس رسالة الواتساب على إيميل العميلة ======
+// ====== إيميل - بيرد فوراً وبيبعت في الخلفية ======
 app.post('/api/send-email', async (req, res) => {
   const { toEmail, clientName, clientMessage } = req.body;
   if (!toEmail) return res.json({ success: false, error: 'No email' });
+
+  // نرد فوراً عشان الموقع ميستناش
+  res.json({ success: true });
+
+  // نبعت في الخلفية
   try {
     const htmlMessage = (clientMessage || '')
       .replace(/\*/g, '')
@@ -209,10 +225,8 @@ app.post('/api/send-email', async (req, res) => {
       `
     });
     console.log('Email sent to', toEmail);
-    res.json({ success: true });
   } catch (e) {
     console.log('Email Error:', e.message);
-    res.json({ success: false, error: e.message });
   }
 });
 
