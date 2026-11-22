@@ -10,10 +10,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
 app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
 
-const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "";
-const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "";
-const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "";
-const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "";
+const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "instance196362";
+const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "agyfoi0qg5lnqbum";
+const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "201558025074";
+const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "01005288219";
 
 // ====== إيميل سريع - بورت 587 + Timeout ======
 const transporter = nodemailer.createTransport({
