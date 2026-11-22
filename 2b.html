@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-ar="فيست - لينا فاشون" data-en="VEST - LENA FASHION">VEST - LENA
-        FASHION</title>
+    <title data-ar="فيست - لينا فاشون" data-en="VEST - LENA FASHION">VEST - LENA FASHION</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -222,6 +221,22 @@
             object-fit: cover;
             display: block;
             border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* عداد الصور تحت على اليمين */
+        .image-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+            pointer-events: none;
         }
 
         .product-details {
@@ -803,18 +818,19 @@
     <main class="main-wrapper">
         <section class="product-main-section">
             <div class="product-gallery">
-                <div class="image-box">
+                <div class="image-box" id="productImageBox">
                     <span id="wishlist-heart-btn" class="wishlist-heart-btn" onclick="toggleWishlist()"
                         style="position: absolute; top: 15px; right: 15px; font-size: 18px; cursor: pointer; z-index: 10; background: rgba(255,255,255,0.8); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"
                         title="Add to Wishlist">
                         <i id="image-heart-icon" class="fa-regular fa-heart"></i>
                     </span>
-                    <img id="main-product-image" src="2b.jpeg" alt="Layaly Pants">
+                    <img id="main-product-image" src="2b.jpeg" alt="VEST" onclick="nextProductImage()">
+                    <div class="image-counter" id="image-counter">1/1</div>
                 </div>
             </div>
 
             <div class="product-details">
-                <h1 class="product-title" data-ar="فيست (2b)" data-en="VEST(2b)"> </h1>
+                <h1 class="product-title" data-ar="فيست (2b)" data-en="VEST(2b)">VEST(2b)</h1>
 
                 <div class="price-box">
                     <span class="current-price">LE 1075.00 EGP</span>
@@ -869,40 +885,39 @@
                     <div id="fabric1-colors" class="color-group active">
                         <div class="color-circle bg-brown" style="background-color: white;"
                             onclick="selectColor('WHITE', '2bابيض.jpeg', this)" title="WHITE"></div>
-                        <div class="color-circle bg-pink" style="background-color: rgb(0, 0, 0);"
+                        <div class="color-circle bg-pink active" style="background-color: rgb(0, 0, 0);"
                             onclick="selectColor('BLACK', '2bاسود.jpeg', this)" title="BLACK"></div>
                         <div class="color-circle bg-pink" style="background-color: rgb(7, 63, 10);"
                             onclick="selectColor('zayti', '2bزيتي.jpeg', this)" title="zayti"></div>
                         <div class="color-circle bg-pink" style="background-color: rgb(67, 33, 1);"
-                            onclick="selectColor('browen', '2bبني.jpeg', this)" title="browen "></div>
-                    </div>
-
-
-                    <div class="quantity-section">
-                        <label data-ar="الكمية:" data-en="Quantity:">Quantity:</label>
-                        <div class="quantity-selector">
-                            <button type="button" id="minus-btn" onclick="decreaseQuantity()">-</button>
-                            <input type="text" id="quantity-input" value="1" readonly>
-                            <button type="button" id="plus-btn" onclick="increaseQuantity()">+</button>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-cart" onclick="addToCart()" data-ar="إضافة إلى السلة"
-                        data-en="Add to cart">Add to cart</button>
-                    <button class="btn btn-buy" onclick="buyNow()" data-ar="اشترِ الآن" data-en="Buy it now">Buy it
-                        now</button>
-
-
-                    <div class="product-description">
-                        <p class="shipping-highlight" data-ar="الشحن خلال 7 أيام مع إمكانية معاينة المنتج عند الاستلام"
-                            data-en="Shipping within 7 days with item inspection available upon delivery">Shipping
-                            within 7 days with item inspection available upon delivery</p>
-                    </div>
-
-                    <div class="share-section">
-                        <span data-ar="🔗 مشاركة" data-en="🔗 Share">🔗 Share</span>
+                            onclick="selectColor('browen', '2bبني.jpeg', this)" title="browen"></div>
                     </div>
                 </div>
+
+                <div class="quantity-section">
+                    <label data-ar="الكمية:" data-en="Quantity:">Quantity:</label>
+                    <div class="quantity-selector">
+                        <button type="button" id="minus-btn" onclick="decreaseQuantity()">-</button>
+                        <input type="text" id="quantity-input" value="1" readonly>
+                        <button type="button" id="plus-btn" onclick="increaseQuantity()">+</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-cart" onclick="addToCart()" data-ar="إضافة إلى السلة"
+                    data-en="Add to cart">Add to cart</button>
+                <button class="btn btn-buy" onclick="buyNow()" data-ar="اشترِ الآن" data-en="Buy it now">Buy it
+                    now</button>
+
+                <div class="product-description">
+                    <p class="shipping-highlight" data-ar="الشحن خلال 7 أيام مع إمكانية معاينة المنتج عند الاستلام"
+                        data-en="Shipping within 7 days with item inspection available upon delivery">Shipping
+                        within 7 days with item inspection available upon delivery</p>
+                </div>
+
+                <div class="share-section" onclick="shareProduct()">
+                    <span data-ar="🔗 مشاركة" data-en="🔗 Share">🔗 Share</span>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -914,7 +929,7 @@
                     <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
                     <img src="G11.jpeg" alt="Comfy Wide leg pants">
                     <h3 data-ar="جاكيت صوف" data-en="WOOL JACKET">BLAZER</h3>
-                    <p class="rec-price">LE 1,550.00 EGP </p>
+                    <p class="rec-price">LE 1,550.00 EGP</p>
                     <button class="btn-mini" data-ar="اختر الخيارات" data-en="Choose options">Choose options</button>
                 </a>
 
@@ -922,7 +937,7 @@
                     <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
                     <img src="k.jpg" alt="Layaly Premium Set">
                     <h3 data-ar="بالطو قصير" data-en="CROPPED TRENCH COAT">CROPPED TRENCH COAT</h3>
-                    <p class="rec-price">LE 1,850.00 EGP </p>
+                    <p class="rec-price">LE 1,850.00 EGP</p>
                     <button class="btn-mini" data-ar="اختر الخيارات" data-en="Choose options">Choose options</button>
                 </a>
 
@@ -930,7 +945,7 @@
                     <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
                     <img src="cg.jpg" alt="Royal Komono">
                     <h3 data-ar="بالطو صوف" data-en="WOOL COAT">WOOL COAT</h3>
-                    <p class="rec-price">LE 2,020.00 EGP </p>
+                    <p class="rec-price">LE 2,020.00 EGP</p>
                     <button class="btn-mini" data-ar="اختر الخيارات" data-en="Choose options">Choose options</button>
                 </a>
 
@@ -938,7 +953,7 @@
                     <span class="sale-tag" data-ar="تخفيض" data-en="Sale">Sale</span>
                     <img src="CB.jpg" alt="Luxury Elegance Set">
                     <h3 data-ar="بالطو صوف" data-en="WOOL COAT">WOOL COAT</h3>
-                    <p class="rec-price">LE 2,020.00 EGP </p>
+                    <p class="rec-price">LE 2,020.00 EGP</p>
                     <button class="btn-mini" data-ar="اختر الخيارات" data-en="Choose options">Choose options</button>
                 </a>
             </div>
@@ -1001,31 +1016,45 @@
                     id="drawer-wishlist-count">0</span>)</h3>
             <button class="close-menu-btn" onclick="toggleWishlistDrawer()">✕</button>
         </div>
-
         <div class="cart-items-list" id="wishlistItemsContainer"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let savedLang = localStorage.getItem('site_lang') || 'ar';
+        // مصفوفة الصور لكل لون (عدّلي أسماء الصور حسب ملفاتك)
+        const colorGalleries = {
+            'WHITE':  ['2bابيض.jpeg', '2bابيض2.jpeg', '2bابيض3.jpeg'],
+            'BLACK':  ['2bاسود.jpeg', '2bاسود2.jpeg', '2bاسود3.jpeg'],
+            'zayti':  ['2bزيتي.jpeg', '2bزيتي2.jpeg'],
+            'browen': ['2bبني.jpeg', '2bبني2.jpeg']
+        };
 
-            document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
-            document.documentElement.lang = savedLang;
+        let selectedSize = 'S';
+        let selectedColor = 'BLACK';
+        let currentColorImages = colorGalleries['BLACK'];
+        let currentImageIndex = 0;
+        let cart = JSON.parse(localStorage.getItem('lenaCart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('lenaWishlist')) || [];
+        const productPrice = 1075;
+        const productTitle = 'VEST(2b)';
 
-            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-                el.innerHTML = el.getAttribute(`data-${savedLang}`);
-            });
-
-            updateCartUI();
-            updateWishlistUI();
-            checkWishlistStatus();
-        });
-
+        // القائمة والسلال
         function toggleMenu() {
-            const sidebar = document.getElementById('sidebarMenu');
-            const overlay = document.getElementById('menuOverlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
+            document.getElementById('sidebarMenu').classList.toggle('open');
+            document.getElementById('menuOverlay').classList.toggle('active');
+        }
+
+        function toggleCartDrawer() {
+            closeAllDrawers();
+            document.getElementById('cartDrawer').classList.add('open');
+            document.getElementById('menuOverlay').classList.add('active');
+            renderCart();
+        }
+
+        function toggleWishlistDrawer() {
+            closeAllDrawers();
+            document.getElementById('wishlistDrawer').classList.add('open');
+            document.getElementById('menuOverlay').classList.add('active');
+            renderWishlist();
         }
 
         function closeAllDrawers() {
@@ -1035,235 +1064,189 @@
             document.getElementById('menuOverlay').classList.remove('active');
         }
 
-        function selectColor(colorName, imageSrc, element) {
-            const parentGroup = element.closest('.color-group');
-            parentGroup.querySelectorAll('.color-circle').forEach(circle => circle.classList.remove('active'));
-            element.classList.add('active');
-
-            document.getElementById('selected-color-text').innerText = colorName;
-
-            if (imageSrc) {
-                document.getElementById('main-product-image').src = imageSrc;
+        // تحديث الصورة الرئيسية والعداد (مثلاً 1/3)
+        function updateImageAndCounter() {
+            const imgEl = document.getElementById('main-product-image');
+            const counterEl = document.getElementById('image-counter');
+            if (imgEl && currentColorImages.length > 0) {
+                imgEl.src = currentColorImages[currentImageIndex];
+            }
+            if (counterEl) {
+                counterEl.textContent = `${currentImageIndex + 1}/${currentColorImages.length}`;
             }
         }
 
-        function selectSize(sizeName, element) {
-            const sizeButtons = element.closest('.options-group').querySelectorAll('.size-btn');
-            sizeButtons.forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
-
-            document.getElementById('selected-size-text').innerText = sizeName;
+        // التقليب بين صور نفس اللون عند الضغط على الصورة
+        function nextProductImage() {
+            if (currentColorImages.length <= 1) return;
+            currentImageIndex = (currentImageIndex + 1) % currentColorImages.length;
+            updateImageAndCounter();
         }
 
-        // فتح وإغلاق السلة الجانبية
-        function toggleCartDrawer() {
-            document.getElementById('cartDrawer').classList.toggle('open');
-            document.getElementById('menuOverlay').classList.toggle('active');
+        // اختيار المقاس
+        function selectSize(size, btn) {
+            selectedSize = size;
+            document.getElementById('selected-size-text').textContent = size;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
         }
 
-        // فتح وإغلاق قائمة المفضلة
-        function toggleWishlistDrawer() {
-            document.getElementById('wishlistDrawer').classList.toggle('open');
-            document.getElementById('menuOverlay').classList.toggle('active');
+        // اختيار اللون + تغيير الصور + تحديث العداد + الطلوع لفوق
+        function selectColor(colorName, defaultImg, element) {
+            selectedColor = colorName;
+            document.getElementById('selected-color-text').textContent = colorName.toUpperCase();
+
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            currentColorImages = colorGalleries[colorName] || [defaultImg];
+            currentImageIndex = 0;
+            updateImageAndCounter();
+
+            // طلوع الشاشة لفوق بنعومة عند الصورة
+            const imageBox = document.getElementById('productImageBox');
+            if (imageBox) {
+                imageBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
-        // دالة إضافة المنتج للسلة
+        // الكمية
+        function increaseQuantity() {
+            const input = document.getElementById('quantity-input');
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity-input');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        // السلة
         function addToCart() {
-            const title = document.querySelector('.product-title').innerText;
-            const priceText = document.querySelector('.current-price').innerText;
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
-            const image = document.getElementById('main-product-image').src;
-            const size = document.getElementById('selected-size-text') ? document.getElementById('selected-size-text').innerText : 'S';
-            const color = document.getElementById('selected-color-text') ? document.getElementById('selected-color-text').innerText : 'رصاصي';
-            const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
-
-            let cart = JSON.parse(localStorage.getItem('lenaCart')) || [];
-            const existingIndex = cart.findIndex(item => item.title === title && item.size === size && item.color === color);
-
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += quantity;
-            } else {
-                cart.push({ title, price, image, size, color, quantity });
-            }
-
+            const qty = parseInt(document.getElementById('quantity-input').value);
+            const currentImg = currentColorImages[currentImageIndex] || '2b.jpeg';
+            cart.push({
+                title: productTitle,
+                size: selectedSize,
+                color: selectedColor,
+                qty: qty,
+                price: productPrice,
+                image: currentImg
+            });
             localStorage.setItem('lenaCart', JSON.stringify(cart));
-            updateCartUI();
+            updateCounters();
             toggleCartDrawer();
         }
 
-        // دالة حذف منتج من السلة
-        function removeFromCart(index) {
-            let cart = JSON.parse(localStorage.getItem('lenaCart')) || [];
-            cart.splice(index, 1);
-            localStorage.setItem('lenaCart', JSON.stringify(cart));
-            updateCartUI();
-        }
-
-        // تحديث عرض السلة والعدد
-        function updateCartUI() {
-            let cart = JSON.parse(localStorage.getItem('lenaCart')) || [];
-            const container = document.getElementById('cartItemsContainer');
-            let totalItems = 0;
-            let totalPrice = 0;
-            let savedLang = localStorage.getItem('site_lang') || 'ar';
-
-            if (cart.length === 0) {
-                let emptyMsg = savedLang === 'ar' ? 'السلة فارغة حالياً' : 'Your cart is currently empty';
-                container.innerHTML = `<p style="text-align:center; color:#888; margin-top:30px;">${emptyMsg}</p>`;
-            } else {
-                container.innerHTML = '';
-                cart.forEach((item, index) => {
-                    totalItems += item.quantity;
-                    totalPrice += item.price * item.quantity;
-
-                    let colorLabel = savedLang === 'ar' ? 'اللون' : 'Color';
-                    let sizeLabel = savedLang === 'ar' ? 'المقاس' : 'Size';
-                    let qtyLabel = savedLang === 'ar' ? 'العدد' : 'Qty';
-
-                    container.innerHTML += `
-                        <div class="cart-item">
-                            <img src="${item.image}" alt="${item.title}">
-                            <div class="cart-item-info">
-                                <div class="cart-item-title">${item.title}</div>
-                                <div class="cart-item-details">${colorLabel}: ${item.color} | ${sizeLabel}: ${item.size}</div>
-                                <div class="cart-item-details">${qtyLabel}: ${item.quantity}</div>
-                                <div class="cart-item-price">${(item.price * item.quantity).toLocaleString()} EGP</div>
-                            </div>
-                            <button class="remove-item-btn" onclick="removeFromCart(${index})">🗑</button>
-                        </div>
-                    `;
-                });
-            }
-
-            document.getElementById('header-cart-count').innerText = totalItems;
-            document.getElementById('drawer-cart-count').innerText = totalItems;
-            document.getElementById('cartTotalAmount').innerText = totalPrice.toLocaleString() + ' EGP';
-        }
-
-        // زيادة الكمية
-        function increaseQuantity() {
-            const input = document.getElementById('quantity-input');
-            let currentValue = parseInt(input.value) || 1;
-            input.value = currentValue + 1;
-        }
-
-        // تقليل الكمية
-        function decreaseQuantity() {
-            const input = document.getElementById('quantity-input');
-            let currentValue = parseInt(input.value) || 1;
-            if (currentValue > 1) {
-                input.value = currentValue - 1;
-            }
-        }
-
-        // التحقق من حالة القلب (هل المنتج مضاف للمفضلة أم لا)
-        function checkWishlistStatus() {
-            const title = document.querySelector('.product-title').innerText;
-            let wishlist = JSON.parse(localStorage.getItem('lenaWishlist')) || [];
-            const heartIcon = document.getElementById('product-wishlist-icon');
-
-            if (!heartIcon) return;
-
-            const exists = wishlist.some(item => item.title === title);
-
-            if (exists) {
-                heartIcon.className = 'fa-solid fa-heart';
-                heartIcon.style.color = '#e74c3c';
-            } else {
-                heartIcon.className = 'fa-regular fa-heart';
-                heartIcon.style.color = '#333333';
-            }
-        }
-
-        // تبديل حالة المفضلة عند الضغط على القلب فوق الصورة
-        function toggleWishlist() {
-            const titleElement = document.querySelector('.product-title');
-            const priceElement = document.querySelector('.current-price');
-            const imageElement = document.getElementById('main-product-image');
-            const size = document.getElementById('selected-size-text') ? document.getElementById('selected-size-text').innerText : 'S';
-            const color = document.getElementById('selected-color-text') ? document.getElementById('selected-color-text').innerText : '';
-
-            if (!titleElement) return;
-
-            const title = titleElement.innerText;
-            const price = priceElement ? priceElement.innerText : '';
-            const image = imageElement ? imageElement.src : '';
-
-            let wishlist = JSON.parse(localStorage.getItem('lenaWishlist')) || [];
-            const index = wishlist.findIndex(item => item.title === title);
-
-            if (index > -1) {
-                wishlist.splice(index, 1);
-            } else {
-                wishlist.push({ title, price, image, size, color });
-            }
-
-            localStorage.setItem('lenaWishlist', JSON.stringify(wishlist));
-            updateWishlistUI();
-        }
-
-        // حذف منتج من المفضلة عبر القائمة الجانبية
-        function removeFromWishlist(index) {
-            let wishlist = JSON.parse(localStorage.getItem('lenaWishlist')) || [];
-            wishlist.splice(index, 1);
-            localStorage.setItem('lenaWishlist', JSON.stringify(wishlist));
-            updateWishlistUI();
-        }
-
-        // تحديث واجهة المفضلة
-        function updateWishlistUI() {
-            let wishlist = JSON.parse(localStorage.getItem('lenaWishlist')) || [];
-            const container = document.getElementById('wishlistItemsContainer');
-            let savedLang = localStorage.getItem('site_lang') || 'ar';
-
-            if (wishlist.length === 0) {
-                let emptyMsg = savedLang === 'ar' ? 'قائمة المفضلة فارغة' : 'Wishlist is empty';
-                container.innerHTML = `<p style="text-align:center; color:#888; margin-top:30px;">${emptyMsg}</p>`;
-            } else {
-                container.innerHTML = '';
-                wishlist.forEach((item, index) => {
-                    container.innerHTML += `
-                        <div class="cart-item">
-                            <img src="${item.image}" alt="${item.title}">
-                            <div class="cart-item-info">
-                                <div class="cart-item-title">${item.title}</div>
-                                <div class="cart-item-details">اللون: ${item.color} | المقاس: ${item.size}</div>
-                                <div class="cart-item-price">${item.price}</div>
-                            </div>
-                            <button class="remove-item-btn" onclick="removeFromWishlist(${index})">🗑</button>
-                        </div>
-                    `;
-                });
-            }
-
-            const totalWishlist = wishlist.length;
-            document.getElementById('header-wishlist-count').innerText = totalWishlist;
-            document.getElementById('drawer-wishlist-count').innerText = totalWishlist;
-            checkWishlistStatus();
-        }
-
-        // دالة الشراء الفوري (Buy It Now)
         function buyNow() {
-            const title = document.querySelector('.product-title').innerText;
-            const priceText = document.querySelector('.current-price').innerText;
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
-            const image = document.getElementById('main-product-image').src;
-            const size = document.getElementById('selected-size-text') ? document.getElementById('selected-size-text').innerText : 'S';
-            const color = document.getElementById('selected-color-text') ? document.getElementById('selected-color-text').innerText : '';
-            const quantity = parseInt(document.getElementById('quantity-input').value) || 1;
-
-            let cart = JSON.parse(localStorage.getItem('lenaCart')) || [];
-            const existingIndex = cart.findIndex(item => item.title === title && item.size === size && item.color === color);
-
-            if (existingIndex > -1) {
-                cart[existingIndex].quantity += quantity;
-            } else {
-                cart.push({ title, price, image, size, color, quantity });
-            }
-
-            localStorage.setItem('lenaCart', JSON.stringify(cart));
+            addToCart();
             window.location.href = 'form.html';
         }
+
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('lenaCart', JSON.stringify(cart));
+            updateCounters();
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            let total = 0;
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#777;margin-top:30px;">السلة فارغة</p>';
+                document.getElementById('cartTotalAmount').textContent = '0 EGP';
+                return;
+            }
+            container.innerHTML = cart.map((item, idx) => {
+                total += item.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-details">Size: ${item.size} | Color: ${item.color} | Qty: ${item.qty}</div>
+                            <div class="cart-item-price">LE ${item.price * item.qty} EGP</div>
+                        </div>
+                        <button class="remove-item-btn" onclick="removeCartItem(${idx})">✕</button>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('cartTotalAmount').textContent = `LE ${total} EGP`;
+        }
+
+        // المفضلة
+        function toggleWishlist() {
+            const existsIndex = wishlist.findIndex(item => item.title === productTitle && item.color === selectedColor);
+            if (existsIndex > -1) {
+                wishlist.splice(existsIndex, 1);
+            } else {
+                wishlist.push({
+                    title: productTitle,
+                    color: selectedColor,
+                    price: productPrice,
+                    image: currentColorImages[currentImageIndex] || '2b.jpeg'
+                });
+            }
+            localStorage.setItem('lenaWishlist', JSON.stringify(wishlist));
+            updateCounters();
+            renderWishlist();
+        }
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlistItemsContainer');
+            if (wishlist.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#777;margin-top:30px;">المفضلة فارغة</p>';
+                return;
+            }
+            container.innerHTML = wishlist.map((item, idx) => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-details">Color: ${item.color}</div>
+                        <div class="cart-item-price">LE ${item.price} EGP</div>
+                    </div>
+                    <button class="remove-item-btn" onclick="removeWishlistItem(${idx})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removeWishlistItem(idx) {
+            wishlist.splice(idx, 1);
+            localStorage.setItem('lenaWishlist', JSON.stringify(wishlist));
+            updateCounters();
+            renderWishlist();
+        }
+
+        function updateCounters() {
+            const totalCartQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('header-cart-count').textContent = totalCartQty;
+            document.getElementById('drawer-cart-count').textContent = totalCartQty;
+            document.getElementById('header-wishlist-count').textContent = wishlist.length;
+            document.getElementById('drawer-wishlist-count').textContent = wishlist.length;
+
+            const isFav = wishlist.some(item => item.title === productTitle && item.color === selectedColor);
+            const heartIcon = document.getElementById('image-heart-icon');
+            const headerHeart = document.getElementById('wishlist-icon-shape');
+            if (heartIcon) heartIcon.className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+            if (headerHeart) headerHeart.className = wishlist.length > 0 ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+        }
+
+        function shareProduct() {
+            if (navigator.share) {
+                navigator.share({ title: document.title, url: window.location.href });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href);
+                alert('تم نسخ رابط المنتج!');
+            }
+        }
+
+        // تشغيل مبدئي
+        updateImageAndCounter();
+        updateCounters();
     </script>
 </body>
 
