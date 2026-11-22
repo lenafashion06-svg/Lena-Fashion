@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const nodemailer = require('nodemailer');
 const { sql, poolPromise } = require('./db');
 
 const app = express();
@@ -10,25 +9,11 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
 app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
 
-const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "instance196362";
-const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "agyfoi0qg5lnqbum";
-const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "201558025074";
-const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "01005288219";
-
-// ====== إيميل سريع - بورت 587 + Timeout ======
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: 'lenafashion@gmail.com',
-    pass: process.env.GMAIL_APP_PASSWORD
-  },
-  connectionTimeout: 8000,
-  greetingTimeout: 8000,
-  socketTimeout: 8000
-});
+// ====== سيبتلك هنا مكانين بس للصق ======
+const ULTRAMSG_INSTANCE_ID = "instance196362";
+const ULTRAMSG_TOKEN = "agyfoi0qg5lnqbum";
+const STORE_WHATSAPP_NUMBER = "201558025074";
+const VODAFONE_NUMBER = "01005288219";
 
 function norm(s) {
     return (s || '')
@@ -197,34 +182,40 @@ app.post('/api/send-whatsapp', async (req, res) => {
     }
 });
 
-// ====== إيميل - بيرد فوراً وبيبعت في الخلفية ======
+// ====== إيميل عن طريق Resend - بيشتغل على Railway ======
 app.post('/api/send-email', async (req, res) => {
   const { toEmail, clientName, clientMessage } = req.body;
   if (!toEmail) return res.json({ success: false, error: 'No email' });
 
-  // نرد فوراً عشان الموقع ميستناش
   res.json({ success: true });
 
-  // نبعت في الخلفية
   try {
     const htmlMessage = (clientMessage || '')
       .replace(/\*/g, '')
       .replace(/\n/g, '<br>');
 
-    await transporter.sendMail({
-      from: '"LENA FASHION" <lenafashion@gmail.com>',
-      to: toEmail,
-      subject: `تم تأكيد طلبك في LENA FASHION ✨ - أهلاً بيكي يا ${clientName || ''}`,
-      html: `
-        <div dir="rtl" style="font-family: Arial; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-          <h2 style="text-align:center;">LENA FASHION</h2>
-          <p style="font-size:16px; line-height:1.8;">${htmlMessage}</p>
-          <hr>
-          <p style="text-align:center; color:#888; font-size:12px;">The Style Never Dies.</p>
-        </div>
-      `
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'LENA FASHION <onboarding@resend.dev>',
+        to: [toEmail],
+        subject: `تم تأكيد طلبك في LENA FASHION ✨ - أهلاً بيكي يا ${clientName || ''}`,
+        html: `
+          <div dir="rtl" style="font-family: Arial; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+            <h2 style="text-align:center;">LENA FASHION</h2>
+            <p style="font-size:16px; line-height:1.8;">${htmlMessage}</p>
+            <hr>
+            <p style="text-align:center; color:#888; font-size:12px;">The Style Never Dies.</p>
+          </div>
+        `
+      })
     });
-    console.log('Email sent to', toEmail);
+    const j = await r.json().catch(()=>({}));
+    console.log('Email via Resend:', r.status, j.id || j.message || 'sent');
   } catch (e) {
     console.log('Email Error:', e.message);
   }
