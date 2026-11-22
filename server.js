@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const nodemailer = require('nodemailer');
 const { sql, poolPromise } = require('./db');
 
 const app = express();
@@ -9,13 +10,22 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
 app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
 
-// ====== بيانات الواتساب - حطيها في Railway Variables مش هنا ======
+// ====== بيانات الواتساب والإيميل - كلها في Railway Variables مش هنا ======
 // في Railway -> Variables حطي:
-// ULTRAMSG_INSTANCE_ID, ULTRAMSG_TOKEN, STORE_WHATSAPP_NUMBER, VODAFONE_NUMBER
-const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "instance196362";
-const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "agyfoi0qg5lnqbum";
-const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "201558025074";
-const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "01005288219";
+// ULTRAMSG_INSTANCE_ID, ULTRAMSG_TOKEN, STORE_WHATSAPP_NUMBER, VODAFONE_NUMBER, GMAIL_APP_PASSWORD
+const ULTRAMSG_INSTANCE_ID = process.env.ULTRAMSG_INSTANCE_ID || "";
+const ULTRAMSG_TOKEN = process.env.ULTRAMSG_TOKEN || "";
+const STORE_WHATSAPP_NUMBER = process.env.STORE_WHATSAPP_NUMBER || "";
+const VODAFONE_NUMBER = process.env.VODAFONE_NUMBER || "";
+
+// ====== إعداد الإيميل - بيبعت من lenafashion@gmail.com ======
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'lenafashion@gmail.com',
+    pass: process.env.GMAIL_APP_PASSWORD // الـ 16 رقم اللي عملتيه - متحطيهوش هنا، حطيه في Variables
+  }
+});
 
 function norm(s) {
     return (s || '')
@@ -141,12 +151,10 @@ async function createWTWRequest(pool, warehouseID, model, color, size, qtyToDedu
     return true;
 }
 
-// ====== رقم فودافون كاش - الصفحة بتجيبه من هنا مش من الكود ======
 app.get('/api/payment-info', (req, res) => {
     res.json({ vodafoneNumber: VODAFONE_NUMBER });
 });
 
-// ====== واتساب - السيرفر هو اللي بيبعت بالتوكن، مش المتصفح ======
 async function sendWhatsApp(to, body) {
     try {
         const params = new URLSearchParams();
@@ -176,6 +184,36 @@ app.post('/api/send-whatsapp', async (req, res) => {
     } catch(err) {
         res.json({ success: false, error: err.message });
     }
+});
+
+// ====== الإيميل - بيبعت نفس رسالة الواتساب على إيميل العميلة ======
+app.post('/api/send-email', async (req, res) => {
+  const { toEmail, clientName, clientMessage } = req.body;
+  if (!toEmail) return res.json({ success: false, error: 'No email' });
+  try {
+    const htmlMessage = (clientMessage || '')
+      .replace(/\*/g, '')
+      .replace(/\n/g, '<br>');
+
+    await transporter.sendMail({
+      from: '"LENA FASHION" <lenafashion@gmail.com>',
+      to: toEmail,
+      subject: `تم تأكيد طلبك في LENA FASHION ✨ - أهلاً بيكي يا ${clientName || ''}`,
+      html: `
+        <div dir="rtl" style="font-family: Arial; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="text-align:center;">LENA FASHION</h2>
+          <p style="font-size:16px; line-height:1.8;">${htmlMessage}</p>
+          <hr>
+          <p style="text-align:center; color:#888; font-size:12px;">The Style Never Dies.</p>
+        </div>
+      `
+    });
+    console.log('Email sent to', toEmail);
+    res.json({ success: true });
+  } catch (e) {
+    console.log('Email Error:', e.message);
+    res.json({ success: false, error: e.message });
+  }
 });
 
 app.post('/api/sync-order', async (req, res) => {
