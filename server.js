@@ -12,6 +12,7 @@ app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); }
 // ====== سيبتلك هنا مكانين بس للصق ======
 const ULTRAMSG_INSTANCE_ID = "instance196362";
 const ULTRAMSG_TOKEN = "agyfoi0qg5lnqbum";
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const STORE_WHATSAPP_NUMBER = "201558025074";
 const VODAFONE_NUMBER = "01005288219";
 
