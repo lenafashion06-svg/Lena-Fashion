@@ -183,65 +183,70 @@
             display: block;
         }
 
-        /* المحتوى الرئيسي */
+        /* المحتوى الرئيسي بعرض الصفحة */
         .main-wrapper {
             width: 100%;
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 40px 30px;
+            padding: 0 0 40px 0;
         }
 
         .product-main-section {
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 30px;
             width: 100%;
-            align-items: center;
+            align-items: stretch;
         }
 
+        /* الصورة بعرض الصفحة بالكامل */
         .product-gallery {
             width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
         }
 
         .image-box {
             background-color: #f8f8f8;
-            border-radius: 15px;
+            border-radius: 0;
             position: relative;
             text-align: center;
             width: 100%;
-            border: 5px solid #eaeaea;
+            border: none;
             overflow: hidden;
         }
 
         .image-box img {
             width: 100%;
-            height: 380px;
+            height: 75vh;
+            min-height: 360px;
+            max-height: 750px;
             object-fit: cover;
             display: block;
-            border-radius: 10px;
+            border-radius: 0;
             cursor: pointer;
         }
 
         /* عداد الصور تحت على اليمين */
         .image-counter {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.6);
+            bottom: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.65);
             color: #fff;
-            padding: 4px 10px;
+            padding: 5px 11px;
             border-radius: 12px;
             font-size: 12px;
             font-weight: bold;
             z-index: 10;
             pointer-events: none;
+            direction: ltr;
         }
 
         .product-details {
             width: 100%;
-            max-width: 650px;
+            max-width: 100%;
+            padding: 0 20px;
         }
 
         .product-title {
@@ -443,12 +448,12 @@
             width: 100%;
             margin-top: 80px;
             border-top: 1px solid #eaeaea;
-            padding: 50px 40px;
+            padding: 50px 20px;
             background-color: #fafafa;
         }
 
         .section-container {
-            max-width: 1380px;
+            max-width: 100%;
             margin: 0 auto;
             width: 100%;
         }
@@ -547,12 +552,12 @@
             background-color: #f9f9f9;
             border-top: 1px solid #eaeaea;
             color: #333;
-            padding: 50px 40px 20px 40px;
+            padding: 50px 20px 20px 20px;
             width: 100%;
         }
 
         .footer-links {
-            max-width: 1350px;
+            max-width: 100%;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -613,7 +618,7 @@
         }
 
         .footer-bottom {
-            max-width: 1350px;
+            max-width: 100%;
             margin: 0 auto;
             text-align: center;
             border-top: 1px solid #e0e0e0;
@@ -716,12 +721,177 @@
             margin-bottom: 15px;
         }
 
-        @media screen and (max-width: 768px) {
-            .logo {
-                font-size: 16px !important;
-                white-space: nowrap;
-            }
-        }
+        /* سكشن الريفيوهات */
+.reviews-section {
+    width: 100%;
+    margin-top: 60px;
+    padding: 40px 20px;
+    border-top: 1px solid #eaeaea;
+    background-color: #ffffff;
+}
+
+.reviews-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.reviews-header h2 {
+    font-size: 22px;
+    color: #111;
+}
+
+.avg-rating-badge {
+    background: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+}
+
+.review-form {
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.review-form h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #111;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+
+.form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* اختيار النجوم */
+.star-rating-input {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: 6px;
+    font-size: 22px;
+}
+
+.star-rating-input input {
+    display: none;
+}
+
+.star-rating-input label {
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin: 0;
+}
+
+.star-rating-input input:checked ~ label,
+.star-rating-input label:hover,
+.star-rating-input label:hover ~ label {
+    color: #f5b942;
+}
+
+.btn-submit-review {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-submit-review:hover {
+    background: #333;
+}
+
+/* قائمة الريفيوهات */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-card {
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    padding: 16px;
+    background: #fff;
+}
+
+.review-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.reviewer-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #111;
+}
+
+.review-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.review-stars {
+    color: #f5b942;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.review-comment {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+}
+
+@media screen and (max-width: 768px) {
+    .logo {
+        font-size: 16px !important;
+        white-space: nowrap;
+    }
+}
     </style>
 </head>
 
@@ -824,8 +994,8 @@
                         title="Add to Wishlist">
                         <i id="image-heart-icon" class="fa-regular fa-heart"></i>
                     </span>
-                    <img id="main-product-image" src="2b.jpeg" alt="VEST" onclick="nextProductImage()">
-                    <div class="image-counter" id="image-counter">1/1</div>
+                    <img id="main-product-image" src="2bابيض.jpeg" alt="VEST" onclick="nextProductImage()">
+                    <div class="image-counter" id="image-counter">1/4</div>
                 </div>
             </div>
 
@@ -881,15 +1051,15 @@
 
                 <div class="variant-section">
                     <label><span data-ar="اللون:" data-en="Color:">Color:</span> <span id="selected-color-text"
-                            data-ar="اسود" data-en="BLACK">BLACK</span></label>
+                            data-ar="ابيض" data-en="WHITE">WHITE</span></label>
                     <div id="fabric1-colors" class="color-group active">
-                        <div class="color-circle bg-brown" style="background-color: white;"
+                        <div class="color-circle active" style="background-color: white;"
                             onclick="selectColor('WHITE', '2bابيض.jpeg', this)" title="WHITE"></div>
-                        <div class="color-circle bg-pink active" style="background-color: rgb(0, 0, 0);"
+                        <div class="color-circle" style="background-color: rgb(0, 0, 0);"
                             onclick="selectColor('BLACK', '2bاسود.jpeg', this)" title="BLACK"></div>
-                        <div class="color-circle bg-pink" style="background-color: rgb(7, 63, 10);"
+                        <div class="color-circle" style="background-color: rgb(7, 63, 10);"
                             onclick="selectColor('zayti', '2bزيتي.jpeg', this)" title="zayti"></div>
-                        <div class="color-circle bg-pink" style="background-color: rgb(67, 33, 1);"
+                        <div class="color-circle" style="background-color: rgb(67, 33, 1);"
                             onclick="selectColor('browen', '2bبني.jpeg', this)" title="browen"></div>
                     </div>
                 </div>
@@ -920,6 +1090,44 @@
             </div>
         </section>
     </main>
+
+    <section class="reviews-section" id="reviewsSection">
+    <div class="reviews-container">
+        <div class="reviews-header">
+            <h2 data-ar="آراء العملاء" data-en="Customer Reviews">آراء العملاء</h2>
+            <div class="avg-rating-badge" id="reviewsSummary">⭐ 0.0 (0 تقييم)</div>
+        </div>
+
+        <form class="review-form" id="reviewForm" onsubmit="submitReview(event)">
+            <h3>أضيفي تقييمك للمنتج</h3>
+
+            <div class="form-group">
+                <label for="reviewerName">الاسم</label>
+                <input type="text" id="reviewerName" placeholder="اكتبي اسمك" required>
+            </div>
+
+            <div class="form-group">
+                <label>التقييم</label>
+                <div class="star-rating-input">
+                    <input type="radio" id="star5" name="rating" value="5" checked><label for="star5" title="5 نجوم">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 نجوم">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 نجوم">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 نجوم">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 نجمة">★</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="reviewComment">التعليق</label>
+                <textarea id="reviewComment" placeholder="احكي لنا عن جودة الخامة والمقاس وتجربتك..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-review">نشر التقييم</button>
+        </form>
+
+        <div class="reviews-list" id="reviewsList"></div>
+    </div>
+</section>
 
     <div class="full-width-section">
         <section class="section-container">
@@ -1020,18 +1228,16 @@
     </div>
 
     <script>
-        // مصفوفة الصور لكل لون (عدّلي أسماء الصور حسب ملفاتك)
-        const colorGalleries = {
-            'WHITE':  ['2bابيض.jpeg', '2bابيض2.jpeg', '2bابيض3.jpeg'],
-            'BLACK':  ['2bاسود.jpeg', '2bاسود2.jpeg', '2bاسود3.jpeg'],
-            'zayti':  ['2bزيتي.jpeg', '2bزيتي2.jpeg'],
-            'browen': ['2bبني.jpeg', '2bبني2.jpeg']
-        };
+        // قائمة كل صور المنتج (بتتجمع تلقائياً من دواير الألوان تحت)
+        const allProductVariants = [
+            { color: 'WHITE',  image: '2bابيض.jpeg' },
+            { color: 'BLACK',  image: '2bاسود.jpeg' },
+            { color: 'zayti',  image: '2bزيتي.jpeg' },
+            { color: 'browen', image: '2bبني.jpeg' }
+        ];
 
         let selectedSize = 'S';
-        let selectedColor = 'BLACK';
-        let currentColorImages = colorGalleries['BLACK'];
-        let currentImageIndex = 0;
+        let currentIndex = 0; // 0 = 1/4, 1 = 2/4, 2 = 3/4, 3 = 4/4
         let cart = JSON.parse(localStorage.getItem('lenaCart')) || [];
         let wishlist = JSON.parse(localStorage.getItem('lenaWishlist')) || [];
         const productPrice = 1075;
@@ -1064,23 +1270,31 @@
             document.getElementById('menuOverlay').classList.remove('active');
         }
 
-        // تحديث الصورة الرئيسية والعداد (مثلاً 1/3)
-        function updateImageAndCounter() {
+        // تحديث الصورة + العداد (1/4، 2/4، 3/4، 4/4) + تحديد دايرة اللون واسمه
+        function syncGalleryState() {
+            const total = allProductVariants.length;
+            const current = allProductVariants[currentIndex];
+
             const imgEl = document.getElementById('main-product-image');
             const counterEl = document.getElementById('image-counter');
-            if (imgEl && currentColorImages.length > 0) {
-                imgEl.src = currentColorImages[currentImageIndex];
-            }
-            if (counterEl) {
-                counterEl.textContent = `${currentImageIndex + 1}/${currentColorImages.length}`;
-            }
+            const colorTextEl = document.getElementById('selected-color-text');
+            const circles = document.querySelectorAll('#fabric1-colors .color-circle');
+
+            if (imgEl) imgEl.src = current.image;
+            if (counterEl) counterEl.textContent = `${currentIndex + 1}/${total}`;
+            if (colorTextEl) colorTextEl.textContent = current.color.toUpperCase();
+
+            circles.forEach((circle, idx) => {
+                circle.classList.toggle('active', idx === currentIndex);
+            });
+
+            updateCounters();
         }
 
-        // التقليب بين صور نفس اللون عند الضغط على الصورة
+        // الضغط على الصورة يقلب للصورة اللي بعدها (1/4 -> 2/4 -> 3/4 -> 4/4)
         function nextProductImage() {
-            if (currentColorImages.length <= 1) return;
-            currentImageIndex = (currentImageIndex + 1) % currentColorImages.length;
-            updateImageAndCounter();
+            currentIndex = (currentIndex + 1) % allProductVariants.length;
+            syncGalleryState();
         }
 
         // اختيار المقاس
@@ -1091,22 +1305,17 @@
             if (btn) btn.classList.add('active');
         }
 
-        // اختيار اللون + تغيير الصور + تحديث العداد + الطلوع لفوق
+        // اختيار اللون من الدواير اللي تحت -> يغير الصورة والعداد ويطلع لفوق
         function selectColor(colorName, defaultImg, element) {
-            selectedColor = colorName;
-            document.getElementById('selected-color-text').textContent = colorName.toUpperCase();
+            const foundIndex = allProductVariants.findIndex(v => v.color === colorName);
+            currentIndex = foundIndex !== -1 ? foundIndex : 0;
 
-            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
-            if (element) element.classList.add('active');
-
-            currentColorImages = colorGalleries[colorName] || [defaultImg];
-            currentImageIndex = 0;
-            updateImageAndCounter();
+            syncGalleryState();
 
             // طلوع الشاشة لفوق بنعومة عند الصورة
             const imageBox = document.getElementById('productImageBox');
             if (imageBox) {
-                imageBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                imageBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
@@ -1126,14 +1335,14 @@
         // السلة
         function addToCart() {
             const qty = parseInt(document.getElementById('quantity-input').value);
-            const currentImg = currentColorImages[currentImageIndex] || '2b.jpeg';
+            const current = allProductVariants[currentIndex];
             cart.push({
                 title: productTitle,
                 size: selectedSize,
-                color: selectedColor,
+                color: current.color,
                 qty: qty,
                 price: productPrice,
-                image: currentImg
+                image: current.image
             });
             localStorage.setItem('lenaCart', JSON.stringify(cart));
             updateCounters();
@@ -1179,15 +1388,16 @@
 
         // المفضلة
         function toggleWishlist() {
-            const existsIndex = wishlist.findIndex(item => item.title === productTitle && item.color === selectedColor);
+            const current = allProductVariants[currentIndex];
+            const existsIndex = wishlist.findIndex(item => item.title === productTitle && item.color === current.color);
             if (existsIndex > -1) {
                 wishlist.splice(existsIndex, 1);
             } else {
                 wishlist.push({
                     title: productTitle,
-                    color: selectedColor,
+                    color: current.color,
                     price: productPrice,
-                    image: currentColorImages[currentImageIndex] || '2b.jpeg'
+                    image: current.image
                 });
             }
             localStorage.setItem('lenaWishlist', JSON.stringify(wishlist));
@@ -1222,13 +1432,14 @@
         }
 
         function updateCounters() {
+            const current = allProductVariants[currentIndex];
             const totalCartQty = cart.reduce((sum, item) => sum + item.qty, 0);
             document.getElementById('header-cart-count').textContent = totalCartQty;
             document.getElementById('drawer-cart-count').textContent = totalCartQty;
             document.getElementById('header-wishlist-count').textContent = wishlist.length;
             document.getElementById('drawer-wishlist-count').textContent = wishlist.length;
 
-            const isFav = wishlist.some(item => item.title === productTitle && item.color === selectedColor);
+            const isFav = wishlist.some(item => item.title === productTitle && item.color === current.color);
             const heartIcon = document.getElementById('image-heart-icon');
             const headerHeart = document.getElementById('wishlist-icon-shape');
             if (heartIcon) heartIcon.className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
@@ -1245,8 +1456,88 @@
         }
 
         // تشغيل مبدئي
-        updateImageAndCounter();
-        updateCounters();
+        syncGalleryState();
+
+        // مفتاح تخزين مستقل لكل منتج حسب عنوانه
+const reviewsStorageKey = `lenaReviews_${productTitle}`;
+let productReviews = JSON.parse(localStorage.getItem(reviewsStorageKey)) || [];
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function renderStars(rating) {
+    const filled = '★'.repeat(rating);
+    const empty = '☆'.repeat(5 - rating);
+    return filled + empty;
+}
+
+function renderReviews() {
+    const listEl = document.getElementById('reviewsList');
+    const summaryEl = document.getElementById('reviewsSummary');
+    if (!listEl || !summaryEl) return;
+
+    if (productReviews.length === 0) {
+        summaryEl.textContent = '⭐ 0.0 (0 تقييم)';
+        listEl.innerHTML = '<p style="color:#777;font-size:14px;">لا توجد تقييمات بعد. كوني أول من يشارك رأيه!</p>';
+        return;
+    }
+
+    const sum = productReviews.reduce((acc, item) => acc + Number(item.rating || 0), 0);
+    const avg = (sum / productReviews.length).toFixed(1);
+    summaryEl.textContent = `⭐ ${avg} (${productReviews.length} تقييم)`;
+
+    listEl.innerHTML = productReviews.map(rev => `
+        <div class="review-card">
+            <div class="review-card-top">
+                <span class="reviewer-name">${escapeHtml(rev.name)}</span>
+                <span class="review-date">${escapeHtml(rev.date)}</span>
+            </div>
+            <div class="review-stars">${renderStars(rev.rating)}</div>
+            <p class="review-comment">${escapeHtml(rev.comment)}</p>
+        </div>
+    `).join('');
+}
+
+function submitReview(event) {
+    event.preventDefault();
+
+    const nameInput = document.getElementById('reviewerName');
+    const commentInput = document.getElementById('reviewComment');
+    const selectedStar = document.querySelector('input[name="rating"]:checked');
+
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+    const rating = selectedStar ? parseInt(selectedStar.value, 10) : 5;
+
+    if (!name || !comment) return;
+
+    const today = new Date().toLocaleDateString('ar-EG', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+
+    productReviews.unshift({
+        name,
+        rating,
+        comment,
+        date: today
+    });
+
+    localStorage.setItem(reviewsStorageKey, JSON.stringify(productReviews));
+
+    nameInput.value = '';
+    commentInput.value = '';
+    document.getElementById('star5').checked = true;
+
+    renderReviews();
+}
+
+// تشغيل عرض الريفيوهات عند فتح الصفحة
+renderReviews();
     </script>
 </body>
 
